@@ -58,5 +58,9 @@
   "defaultExportDirectoryMode": "Auto",
   "openExportedFile": true,
   "env": {},
-  "showExportProgressBar": true
+  "showExportProgressBar": true,
+  "lastExportDirectory": {
+    "win32": "D:\\PersonalFiles\\Blog"
+  },
+  "lastExportType": "Html"
 }
