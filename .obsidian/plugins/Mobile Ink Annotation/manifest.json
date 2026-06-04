@@ -1,0 +1,9 @@
+{
+  "id": "mobile-ink-annotation-basic",
+  "name": "Mobile Ink Annotation Basic",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Basic edition: Markdown/PDF handwritten annotation with core pen, highlighter, eraser, color, width, undo, redo, save, and exit tools. Pro-only tools are not included.",
+  "author": "peyote",
+  "isDesktopOnly": false
+}
