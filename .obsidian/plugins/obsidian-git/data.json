@@ -30,7 +30,7 @@
   "showBranchStatusBar": true,
   "setLastSaveToLastCommit": false,
   "submoduleRecurseCheckout": false,
-  "gitDir": "",
+  "gitDir": "C:\\Program Files\\Git\\cmd\\git.exe",
   "showFileMenu": true,
   "authorInHistoryView": "hide",
   "dateInHistoryView": false,
