@@ -1,8 +1,9 @@
 ---
 dashboard: true
 banner:
-  quote: "The mind is everything. What you think you become."
-  author: "Buddha"
+  quote: "生命。"
+  author: ""
+  image: ""D:\photograph\lty\【哲风壁纸】洛天依-虚拟歌姬.png""
 columns:
   - name: Memo
     color: "#f59e0b"
@@ -33,6 +34,11 @@ id: demo-memo-delete
 如需删除某个分区，请直接编辑 dashboard.md 文件，删除对应的分区内容块即可。
 
 ## Todo
+
+### 待办清单
+id: card-mpzgv8rd
+type: task
+- [ ] 记录obsidian的使用规范
 
 ## Projects
 

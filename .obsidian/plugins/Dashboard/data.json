@@ -27,7 +27,7 @@
     "reading",
     "countdown"
   ],
-  "countdownEnabled": false,
+  "countdownEnabled": true,
   "countdownTargetDate": "",
   "countdownDisplayMode": "days",
   "countdownReminderDays": 0,
