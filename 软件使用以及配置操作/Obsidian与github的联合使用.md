@@ -1,1 +1,3 @@
-nnnnnnnnnnnnnnnnnn
+一、前置条件
+本教程用于使用obsidian进行笔记搭建、查看、编辑，通过github仓库在多端的读取实现数据的同步。因此电脑需要具备科学上网环境、git、obsidian。移动端同样需要科学上网环境。
+二、
