@@ -34,6 +34,12 @@ type: task
 - [ ] 本日课程学习-复习
 - [ ] 本日课程作业
 
+### 生活与杂事
+id: card-mq0hos3p
+type: task
+- [ ] 移植飞书的内容到达obsidian。
+- [ ] 给obsidian添加主题。
+
 ## Projects
 
 ### 我的第一个项目

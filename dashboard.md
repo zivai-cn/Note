@@ -1,8 +1,8 @@
 ---
 dashboard: true
 banner:
-  quote: "The mind is everything. What you think you become."
-  author: "Buddha"
+  quote: "你所浪费的今天，是昨日死去之人苦苦奢望的明天，你所厌恶的现在，是未来的你再也回不去的曾经，珍惜你所拥有的每一天，才会拥有一个永无遗憾的生命。"
+  author: "雷欧幻象"
 columns:
   - name: Memo
     color: "#f59e0b"
@@ -38,7 +38,7 @@ type: task
 id: card-mq0hos3p
 type: task
 - [ ] 移植飞书的内容到达obsidian。
-- [ ] 给obsidian添加主题。
+- [x] 给obsidian添加主题。
 
 ## Projects
 
