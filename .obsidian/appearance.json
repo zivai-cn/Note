@@ -3,5 +3,5 @@
   "monospaceFontFamily": "JetBrains Mono",
   "baseFontSizeAction": true,
   "cssTheme": "Minimal",
-  "showRibbon": false
+  "showRibbon": true
 }
