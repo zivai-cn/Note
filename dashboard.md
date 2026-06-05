@@ -55,7 +55,7 @@ type: task
 ### 专业学习
 id: card-mq0ike88
 type: task
-- [ ] 复盘CSDN账号上的笔记
+- [ ] 复盘CSDN账号上关于PCB设计的笔记
 - [x] 完成硬件循迹小车的pcb设计
 
 ## Projects
