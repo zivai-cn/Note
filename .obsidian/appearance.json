@@ -2,5 +2,6 @@
   "baseFontSize": 20,
   "monospaceFontFamily": "JetBrains Mono",
   "baseFontSizeAction": true,
-  "cssTheme": "Minimal"
+  "cssTheme": "Minimal",
+  "showRibbon": false
 }
