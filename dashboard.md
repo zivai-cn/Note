@@ -27,6 +27,12 @@ color: #2a273b
 
 ## Todo
 
+### 考试与竞赛
+id: card-mq0jqf0x
+type: task
+- [ ] 高数考试-复习无穷级数，做题 ⏰ 2026-06-05 14:34
+- [ ] 检查代码
+
 ### 日常课业
 id: card-mq0hivwe
 type: task
@@ -37,8 +43,8 @@ type: task
 ### 生活与杂事
 id: card-mq0hos3p
 type: task
-- [ ] 移植飞书的内容到达obsidian。
 - [x] 给obsidian添加主题。
+- [x] 移植飞书的内容到达obsidian。
 
 ### 专业学习
 id: card-mq0ike88
