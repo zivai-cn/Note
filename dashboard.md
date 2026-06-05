@@ -27,6 +27,8 @@ columns:
 id: card-mq0hf532
 color: #2a273b
 给家里打一下电话。
+取快递。
+洗衣服。
 
 ## Todo
 
@@ -54,6 +56,7 @@ type: task
 id: card-mq0ike88
 type: task
 - [ ] 复盘CSDN账号上的笔记
+- [x] 完成硬件循迹小车的pcb设计
 
 ## Projects
 
