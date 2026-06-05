@@ -2,7 +2,7 @@
   "dashboardFile": "dashboard",
   "recentDocCount": 5,
   "language": "zh",
-  "stylePreset": "blossom",
+  "stylePreset": "prism",
   "widgetWeatherEnabled": false,
   "widgetHeatmapEnabled": false,
   "widgetTrackerKey": "",
