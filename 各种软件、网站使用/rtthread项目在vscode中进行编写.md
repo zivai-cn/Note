@@ -1,0 +1,31 @@
+# 一、注意事项
+1.本配置只用于在vscode中编辑rtthread文件，编译下载过程仍然在rtthread studio中完成。
+2.注意版本隔离。
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=YThlYTIzYTFjNmExY2RhNWM4M2VkNTJmNTFkZDFiNGFfb05ZTUgwWWJFc1p3dEZLb0NHcmZlbTA5TVFjWXZRcTlfVG9rZW46UDZsZmI5U2hib1ZJUDR4UXRpMmNKRFAzbmplXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=ZjA2MWQ3YmVlODFjODRkMzkwMjhjMGZmMWViN2M3NGZfeTR5bHhSbDBnVUpTUkUza28xekZsY21FNlYza3ZIaVlfVG9rZW46UkxmNWIwSU9Qb04zWVB4V1pVdmNRNjRubnhnXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=YjNjYTE0Zjc2ODkwY2IzYWM2YjdkMTAzNzc5NmFiN2ZfNm42RjNOalV2NHVOWXQ0YjhKNENEdDI0YkZUSmE3UVRfVG9rZW46SDZTZ2IxanE5b21sVDF4TDJlOGNLOVczbmdkXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+# 二、安装拓展
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=MGEyYzRhNzU3OTM1ZTJmYzI0YzM0YTYwOTBlNzY4YWFfY3A0T25JOFY4T2RMakFoVTVWQ3JLRnNUMlJNZFVNMU9fVG9rZW46VDloSGJMQ2tJbzV3cUx4VHJhbWM1OVlQbmxjXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+给vscode配置中文环境。
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=MDZkYzEyOGYzNjhiM2JiZGE2Zjk3MjRiOWI1M2Q4NTVfeWF4MU1ZejJHN0NCQ2RnSkc3Sm9PUXZTYUZWWkRqNVBfVG9rZW46Q3k3S2JQd2VMb2VneXF4eUpWSmNWT21VbkViXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+c语言开发环境。
+# 三、软件使用优化
+## 1.去除下方蓝色条
+右键关闭状态栏。
+## 2.调整控制栏大小
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=M2NiMzU1NDA2MTk5NTkyMTI0ZDE0MmJiNjVkOWUyOGFfMFZRbHlmZlpTbUp1czNRUjBORTBrak5xNGE1WjBGcjFfVG9rZW46S2JYWWJRWWRWbzJtUnB4TWNxT2M3allTbkdiXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=M2EwMTA1NTdkZjhmYTdmNjc5OTg4NmNhYjdhZDNiYzFfeXhvMHRqTTBJU2RDcDlhR0RVOWFYazBrUE1iNjV0d2lfVG9rZW46Vk1uUmJTb090b3lTSHR4UVVTb2NIb1pDbldmXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+## 3.代码窗口字体大小
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGZhZGJhMmNkMzhiZWVmYzVhMThiOGUzZDVhMWI1MWRfd3hGS2Mwbzl1alcwV0s5RldDcmUyanJJTU1uR1JMYzBfVG9rZW46VU1GT2JwM21Eb2x2d3F4N1h5bGNNREhNbk9nXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+## 4.字体美化
+个人习惯使用jetbrains的mono字体。
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=MGQxMTdjODVjOWExM2UxMTc4NzMyMGY2NjZkMDg2ZjJfYXQ5VmZBeTdSZDZuZFFsNmxhSWtrbXJaU2RXamNLQXVfVG9rZW46S1A3MGJWRzdib2xjeE14a3ZWNGM2Zng0bnVjXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+## 5.背景美化
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=ZWQ2ZjQxM2RlODc2NzMyMTQxNWU2YjQ5YzMxOGFmNjZfS2lBWm1EUGNNRXFiVGlNNTlOZk94SndoRXRoYkt5UDRfVG9rZW46Vnk4ZGJwNHE5b3V2Mnh4YW05d2NobUVUbk5jXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+# 四、AI
+本人使用字节跳动trae。
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=NzgwNDE5YTNiOGRlMzZhZTFmZmJjMjhjZTJiZjM2ZmFfZ2ZRQ3RQYk5mVVRZOWdIQ0xGOTZtYzhQRDFVMEtXSDlfVG9rZW46RE5yY2JCZEdNb0xUVEt4Y1NnTGN2UWdnbjhjXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=YWM4YTZjNGQ1YmZmNTQ4OTcxNjYzODYzYTQ5OTMyODNfOEZGQjlFWjFDRUp0Y1BLbEtXdTRCdmQzM20yQVpqcFpfVG9rZW46UllVYmJZR0xwb3c5QW94eG9xZ2NQWlhzbm5jXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)
+![](https://ncn1nffav5vy.feishu.cn/space/api/box/stream/download/asynccode/?code=NzQyYzdkMDExYTAzMDQ0YTgxYzI2ZDBjOWFlOThkZDFfeDZWUnpqRVZTTEpaRVBOUFNuYll4MHpGeFIwZ2lwQmpfVG9rZW46SjZDeGJXTEtQb1lkU3N4NmRaTWNRM0ZjbjJlXzE3ODA2Mzk0NTg6MTc4MDY0MzA1OF9WNA&add_watermark=true&scene_type=CCM)

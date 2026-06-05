@@ -51,7 +51,7 @@ type: task
 ### 硬件循迹小车设计
 id: demo-project-1
 type: project
-[[硬件与PCB设计/工程设计/纯硬件循迹小车（抄板-凡亿教育）/pcb设计.md]]
+[[项目设计/纯粹的PCB设计/纯硬件循迹小车（抄板-凡亿教育）/pcb设计]]
 
 ## Library
 
