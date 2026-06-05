@@ -40,11 +40,18 @@ type: task
 - [ ] 移植飞书的内容到达obsidian。
 - [x] 给obsidian添加主题。
 
+### 专业学习
+id: card-mq0ike88
+type: task
+- [ ] 学习专业内容
+- [ ] 复习当日专业内容笔记
+
 ## Projects
 
-### 我的第一个项目
+### 硬件循迹小车设计
 id: demo-project-1
 type: project
+[[硬件与PCB设计/工程设计/纯硬件循迹小车（抄板-凡亿教育）/pcb设计.md]]
 
 ## Library
 
