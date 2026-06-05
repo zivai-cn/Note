@@ -1,0 +1,15 @@
+{
+	"nodes":[
+		{"id":"9567a74d3970fc22","x":-340,"y":-180,"width":111,"height":60,"type":"text","text":"6V输入"},
+		{"id":"e793d03c78badfec","x":-120,"y":-180,"width":260,"height":60,"type":"text","text":"降压1（独立器件搭建）"},
+		{"id":"1185f52d9368cdfb","type":"text","text":"5V","x":-45,"y":-80,"width":111,"height":60},
+		{"id":"3af24dbefbdbaded","type":"text","text":"3V3","x":380,"y":-80,"width":111,"height":60},
+		{"id":"38e859110391cad0","type":"text","text":"sm1117降压芯片","x":160,"y":-80,"width":140,"height":60,"color":"6"}
+	],
+	"edges":[
+		{"id":"72a6d8db57131285","fromNode":"9567a74d3970fc22","fromSide":"right","toNode":"e793d03c78badfec","toSide":"left"},
+		{"id":"db073e93a27798a0","fromNode":"e793d03c78badfec","fromSide":"bottom","toNode":"1185f52d9368cdfb","toSide":"top"},
+		{"id":"70690c6068424e5b","fromNode":"1185f52d9368cdfb","fromSide":"right","toNode":"38e859110391cad0","toSide":"left"},
+		{"id":"c8265eab916a1a33","fromNode":"38e859110391cad0","fromSide":"right","toNode":"3af24dbefbdbaded","toSide":"left"}
+	]
+}
