@@ -2,7 +2,7 @@
   "dashboardFile": "dashboard",
   "recentDocCount": 5,
   "language": "zh",
-  "stylePreset": "nordic",
+  "stylePreset": "jade",
   "widgetWeatherEnabled": false,
   "widgetHeatmapEnabled": false,
   "widgetTrackerKey": "",
@@ -34,5 +34,23 @@
   "countdownLabel": "",
   "readingEnabled": false,
   "readingSoundEnabled": true,
-  "taskTemplates": []
+  "taskTemplates": [
+    {
+      "id": "tmpl-mq0hfmvh-uu8s",
+      "name": "日常课业",
+      "tasks": [
+        "本日课程学习-整理笔记",
+        "本日课程学习-复习",
+        "本日课程作业"
+      ]
+    },
+    {
+      "id": "tmpl-mq0hhrwt-062a",
+      "name": "专业学习",
+      "tasks": [
+        "学习专业内容",
+        "复习当日专业内容笔记"
+      ]
+    }
+  ]
 }

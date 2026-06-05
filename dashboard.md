@@ -22,8 +22,17 @@ columns:
 
 ### 2026-06-05 备忘录
 id: card-mq0hf532
+color: #2a273b
+给家里打一下电话。
 
 ## Todo
+
+### 日常课业
+id: card-mq0hivwe
+type: task
+- [ ] 本日课程学习-整理笔记
+- [ ] 本日课程学习-复习
+- [ ] 本日课程作业
 
 ## Projects
 
