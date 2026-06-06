@@ -23,13 +23,6 @@ columns:
 
 ## Memo
 
-### 2026-06-05 备忘录
-id: card-mq0hf532
-color: #2a273b
-给家里打一下电话。
-取快递。
-洗衣服。
-
 ### 2026-06-06 备忘录
 id: card-mq1p5cdh
 
