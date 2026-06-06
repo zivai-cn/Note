@@ -36,7 +36,6 @@ color: #2a273b
 id: card-mq0jqf0x
 type: task
 - [ ] 高数考试-复习无穷级数，做题
-- [ ] 检查代码
 
 ### 日常课业
 id: card-mq0hivwe
