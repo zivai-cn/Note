@@ -4,20 +4,21 @@
 		{"id":"8ebb37a1f67abb61","type":"text","text":"12V","x":400,"y":-60,"width":220,"height":60,"color":"4"},
 		{"id":"92ce6857e046141c","type":"text","text":"USB2（TYPEC）","x":20,"y":60,"width":250,"height":60,"color":"1"},
 		{"id":"0f69ad67017249b3","type":"text","text":"DC接口","x":20,"y":-60,"width":250,"height":60,"color":"1"},
-		{"id":"4f7d400ebb16acde","type":"text","text":"合路","x":740,"y":-30,"width":100,"height":90,"color":"3"},
-		{"id":"d5c4ec257d7fe0df","type":"text","text":"12V输出","x":1280,"y":-15,"width":250,"height":60,"color":"6"},
-		{"id":"3b23554bab56bc02","type":"text","text":"合路","x":740,"y":490,"width":100,"height":90,"color":"3"},
 		{"id":"3cef6991abace3d5","type":"text","text":"5V","x":400,"y":460,"width":220,"height":60,"color":"4"},
 		{"id":"acf5d6007795dc52","type":"text","text":"5V","x":400,"y":580,"width":220,"height":60,"color":"4"},
-		{"id":"be21310b36edba1e","type":"text","text":"不定电压","x":400,"y":700,"width":220,"height":60,"color":"4"},
-		{"id":"5ae66272768ccf3e","type":"text","text":"螺钉接线端2","x":20,"y":700,"width":250,"height":60,"color":"1"},
 		{"id":"62219a2f6b3e0e6e","type":"text","text":"USB1（TYPEC）","x":20,"y":460,"width":250,"height":60,"color":"1"},
 		{"id":"f9a81ef1eefd97b8","type":"text","text":"螺钉接线端1","x":20,"y":580,"width":250,"height":60,"color":"1"},
-		{"id":"93e5ec021a02de5b","type":"text","text":"buck","x":660,"y":240,"width":110,"height":80,"color":"#ff0000"},
-		{"id":"d6fb6de6a004178e","type":"text","text":"boost","x":820,"y":240,"width":120,"height":80,"color":"#ff0000"},
-		{"id":"90553cb2c9f0437d","type":"text","text":"5V输出","x":1280,"y":505,"width":250,"height":60,"color":"6"},
-		{"id":"a26578a99195c28d","type":"text","text":"3V3输出","x":1280,"y":640,"width":250,"height":60,"color":"6"},
-		{"id":"5203cea50f43db78","type":"text","text":"LDO","x":1000,"y":630,"width":120,"height":80,"color":"#ff0000"}
+		{"id":"90553cb2c9f0437d","type":"text","text":"5V输出","x":1620,"y":515,"width":250,"height":60,"color":"6"},
+		{"id":"d5c4ec257d7fe0df","type":"text","text":"12V输出","x":1620,"y":-5,"width":250,"height":60,"color":"6"},
+		{"id":"4f7d400ebb16acde","type":"text","text":"合路","x":1080,"y":-20,"width":100,"height":90,"color":"3"},
+		{"id":"a26578a99195c28d","type":"text","text":"3V3输出","x":1620,"y":650,"width":250,"height":60,"color":"6"},
+		{"id":"5203cea50f43db78","type":"text","text":"LDO","x":1340,"y":640,"width":120,"height":80,"color":"#ff0000"},
+		{"id":"3b23554bab56bc02","type":"text","text":"合路","x":1080,"y":500,"width":100,"height":90,"color":"3"},
+		{"id":"be21310b36edba1e","type":"text","text":"不定电压","x":400,"y":250,"width":220,"height":60,"color":"4"},
+		{"id":"5ae66272768ccf3e","type":"text","text":"螺钉接线端2","x":20,"y":250,"width":250,"height":60,"color":"1"},
+		{"id":"972a10a940145af8","type":"text","text":"比较器","x":740,"y":240,"width":125,"height":80,"color":"#ff0000"},
+		{"id":"93e5ec021a02de5b","type":"text","text":"buck","x":1000,"y":310,"width":110,"height":80,"color":"#ff0000"},
+		{"id":"d6fb6de6a004178e","type":"text","text":"boost","x":1160,"y":200,"width":120,"height":80,"color":"#ff0000"}
 	],
 	"edges":[
 		{"id":"fd36ada1033c2f57","fromNode":"62219a2f6b3e0e6e","fromSide":"right","toNode":"3cef6991abace3d5","toSide":"left"},
@@ -36,6 +37,9 @@
 		{"id":"b3af9520c0712268","fromNode":"3b23554bab56bc02","fromSide":"top","toNode":"d6fb6de6a004178e","toSide":"bottom"},
 		{"id":"91abb956f075098b","fromNode":"d6fb6de6a004178e","fromSide":"top","toNode":"4f7d400ebb16acde","toSide":"bottom"},
 		{"id":"b8949598a7214f6a","fromNode":"3b23554bab56bc02","fromSide":"right","toNode":"5203cea50f43db78","toSide":"left"},
-		{"id":"291a7ce8bfd15376","fromNode":"5203cea50f43db78","fromSide":"right","toNode":"a26578a99195c28d","toSide":"left"}
+		{"id":"291a7ce8bfd15376","fromNode":"5203cea50f43db78","fromSide":"right","toNode":"a26578a99195c28d","toSide":"left"},
+		{"id":"64a144f53fa9d72e","fromNode":"be21310b36edba1e","fromSide":"right","toNode":"972a10a940145af8","toSide":"left"},
+		{"id":"f0779bfd96963a80","fromNode":"972a10a940145af8","fromSide":"right","toNode":"93e5ec021a02de5b","toSide":"left"},
+		{"id":"2ae2068314425e94","fromNode":"972a10a940145af8","fromSide":"right","toNode":"d6fb6de6a004178e","toSide":"left"}
 	]
 }
