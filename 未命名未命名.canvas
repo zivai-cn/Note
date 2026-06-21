@@ -13,9 +13,11 @@
 		{"id":"5ae66272768ccf3e","type":"text","text":"螺钉接线端2","x":20,"y":700,"width":250,"height":60,"color":"1"},
 		{"id":"62219a2f6b3e0e6e","type":"text","text":"USB1（TYPEC）","x":20,"y":460,"width":250,"height":60,"color":"1"},
 		{"id":"f9a81ef1eefd97b8","type":"text","text":"螺钉接线端1","x":20,"y":580,"width":250,"height":60,"color":"1"},
-		{"id":"90553cb2c9f0437d","type":"text","text":"5V输出","x":1280,"y":550,"width":250,"height":60,"color":"6"},
 		{"id":"93e5ec021a02de5b","type":"text","text":"buck","x":660,"y":240,"width":110,"height":80,"color":"#ff0000"},
-		{"id":"d6fb6de6a004178e","type":"text","text":"boost","x":820,"y":240,"width":120,"height":80,"color":"#ff0000"}
+		{"id":"d6fb6de6a004178e","type":"text","text":"boost","x":820,"y":240,"width":120,"height":80,"color":"#ff0000"},
+		{"id":"90553cb2c9f0437d","type":"text","text":"5V输出","x":1280,"y":505,"width":250,"height":60,"color":"6"},
+		{"id":"a26578a99195c28d","type":"text","text":"3V3输出","x":1280,"y":640,"width":250,"height":60,"color":"6"},
+		{"id":"5203cea50f43db78","type":"text","text":"LDO","x":1000,"y":630,"width":120,"height":80,"color":"#ff0000"}
 	],
 	"edges":[
 		{"id":"fd36ada1033c2f57","fromNode":"62219a2f6b3e0e6e","fromSide":"right","toNode":"3cef6991abace3d5","toSide":"left"},
@@ -32,6 +34,8 @@
 		{"id":"ebeb4eb286d2577b","fromNode":"93e5ec021a02de5b","fromSide":"bottom","toNode":"3b23554bab56bc02","toSide":"top"},
 		{"id":"549fb298f1e76867","fromNode":"4f7d400ebb16acde","fromSide":"bottom","toNode":"93e5ec021a02de5b","toSide":"top"},
 		{"id":"b3af9520c0712268","fromNode":"3b23554bab56bc02","fromSide":"top","toNode":"d6fb6de6a004178e","toSide":"bottom"},
-		{"id":"91abb956f075098b","fromNode":"d6fb6de6a004178e","fromSide":"top","toNode":"4f7d400ebb16acde","toSide":"bottom"}
+		{"id":"91abb956f075098b","fromNode":"d6fb6de6a004178e","fromSide":"top","toNode":"4f7d400ebb16acde","toSide":"bottom"},
+		{"id":"b8949598a7214f6a","fromNode":"3b23554bab56bc02","fromSide":"right","toNode":"5203cea50f43db78","toSide":"left"},
+		{"id":"291a7ce8bfd15376","fromNode":"5203cea50f43db78","fromSide":"right","toNode":"a26578a99195c28d","toSide":"left"}
 	]
 }
