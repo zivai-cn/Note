@@ -11,4 +11,5 @@
 ![319](assets/vscode-cmake-stm32/file-20260627213304150.png)![425](assets/vscode-cmake-stm32/file-20260627213336083.png)
 ## 4.工作区设置
 ### 工作区界面的比例
-
+### 自由调整代码界面字体大小
+![438](assets/vscode-cmake-stm32/file-20260627213954904.png)
