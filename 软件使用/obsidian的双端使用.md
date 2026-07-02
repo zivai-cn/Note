@@ -69,7 +69,14 @@ https://wwboa.lanzouq.com/iabYO3u2u5qh
   # origin git@github.com:xxx/xxx.git (fetch) 
   # origin git@github.com:xxx/xxx.git (push)
 ```
-- 打开github网页仓库，点击上方绿色code，复制https的网址
+- 打开github网页仓库，点击上方绿色code，复制https的网址，在gitbash中修改，修改后关闭gitbash和obsidian。
+```
+输入
+git remote set-url origin https://github.com/你的用户名/仓库名.git
+验证
+git remote -v 
+# 输出 url 以 https:// 开头即完成
+```
 - 在手机文件目录下找到一个合适的文件夹，用于存放笔记文件。
 - 将电脑上的整个笔记仓库复制到这个文件夹下。上面添加的（.gitignore）是这个文件夹的下一级文件。
 - 在移动端打开obsidian，找到刚才的文件夹。一路选择允许，相信即可。
