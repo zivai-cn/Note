@@ -60,7 +60,16 @@ https://wwboa.lanzouq.com/iabYO3u2u5qh
 ```
 ## （二）转移核心文件
 - 先在PC修改本地仓库访问git的方式，默认应该是SSH，需要修改为HTTPS访问，改好之后，把电脑上的本地文件拖到手机里（见下文）。再将电脑改回SSH。
-- 
+- 在.git的同级下，右键打开gitbash。（需要安装git）
+```
+  输入
+  git remote -v
+  回复
+  # 输出示例（SSH） 
+  # origin git@github.com:xxx/xxx.git (fetch) 
+  # origin git@github.com:xxx/xxx.git (push)
+```
+- 打开github网页仓库，点击上方绿色code，复制https的网址
 - 在手机文件目录下找到一个合适的文件夹，用于存放笔记文件。
 - 将电脑上的整个笔记仓库复制到这个文件夹下。上面添加的（.gitignore）是这个文件夹的下一级文件。
 - 在移动端打开obsidian，找到刚才的文件夹。一路选择允许，相信即可。
