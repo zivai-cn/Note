@@ -86,4 +86,4 @@ git remote -v
 - 下翻找到git插件，下翻，找到下图位置，在图中位置填写github昵称，还有github仓库账户使用的邮箱。
 ![450](assets/obsidian的双端使用/file-20260702213417413.png)![509](assets/obsidian的双端使用/file-20260702213524686.png)
 - 至此，配置完成。注意，由于软件原因，不推荐使用移动端修改，只建议作为查看。同时移动端同步github内容，至少5min后才会生效。
-- 
+- a test
