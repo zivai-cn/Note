@@ -38,8 +38,10 @@ For bug reports, read
         http://openocd.org/doc/doxygen/bugs.html
 
 clangd.exe --version
-
+clangd version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+Features: windows
+Platform: x86_64-pc-windows-msvc
 ```
-4. 添加新的环境变量，openocd
+4. 添加新的环境变量，openocd，添加到与path平级的系统变量。
 ![541](assets/cmake开发环境/file-20260716212802295.png)
 5. 
