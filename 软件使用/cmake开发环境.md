@@ -16,4 +16,30 @@ task的配置文件为tasks.json，地址是workspace/.vscode/tasks.json
 1. 下载工具链，建议放在d盘的一个专门用来放置环境相关文件的地方。包括：cmake，ninja，arm-gnu-toolchain，openocd，clangd
 2. 将工具链添加进入系统环境变量。如何设置环境变量，请看自行查找。
 ![494](assets/cmake开发环境/file-20260716210952890.png)
-3. 
+3. 添加完成测试，在终端中查询版本号。如果可以出现版本号，证明前面步骤都是正确的。
+```c
+cmake --version
+cmake version 3.28.1
+
+ninja --version
+1.11.1
+
+arm-none-eabi-gcc --version
+arm-none-eabi-gcc.exe (GNU Tools for STM32 13.3.rel1.20250523-0900) 13.3.1 20240614
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+openocd.exe --version
+Open On-Chip Debugger 0.12.0 (2026-03-02) [https://github.com/sysprogs/openocd]
+Licensed under GNU GPL v2
+libusb1 d52e355daa09f17ce64819122cb067b8a2ee0d4b
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+
+clangd.exe --version
+
+```
+4. 添加新的环境变量，openocd
+![541](assets/cmake开发环境/file-20260716212802295.png)
+5. 
