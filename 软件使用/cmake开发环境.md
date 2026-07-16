@@ -8,4 +8,5 @@ workspace就相当于其他编译器如keil的建立的工程项目。
 vscode提供了ui界面进行设置，同时也可以通过settings.json进行设置，在后续的操作中，需要通过settings.json进行设置。
 settings的级别：settings有两个，分别是workspace的settings还有user的settings。user的settings是全局设置，workspace的settings针对的是这个工作文件，移植到其他项目的文件夹下同样会生效。储存地址是workspace/.vscode/settings.json。workspace的settings优先级要高于user。
 3. task
-通过task，开发者可以直接使用命令行指令，包括make，ninja，cmake等
+通过task，开发者可以直接使用命令行指令，包括make，ninja，cmake等，无需打开终端进行操作。
+task的配置文件为tasks.json，地址是workspace/.vscode/tasks.json
