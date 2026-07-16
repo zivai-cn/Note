@@ -13,3 +13,7 @@ settings的级别：settings有两个，分别是workspace的settings还有user�
 task的配置文件为tasks.json，地址是workspace/.vscode/tasks.json
 # 三、模板工程的使用
 ## （一）安装工具链
+1. 下载工具链，建议放在d盘的一个专门用来放置环境相关文件的地方。包括：cmake，ninja，arm-gnu-toolchain，openocd，clangd
+2. 将工具链添加进入系统环境变量。如何设置环境变量，请看自行查找。
+![494](assets/cmake开发环境/file-20260716210952890.png)
+3. 
