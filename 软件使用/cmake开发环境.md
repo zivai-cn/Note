@@ -6,4 +6,4 @@
 workspace就相当于其他编译器如keil的建立的工程项目。
 2. 设置
 vscode提供了ui界面进行设置，同时也可以通过settings.json进行设置，在后续的操作中，需要通过settings.json进行设置。
-3. 
+settings的级别：settings有两个，分别是workspace的settings还有user的settings。
