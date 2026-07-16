@@ -45,3 +45,11 @@ Platform: x86_64-pc-windows-msvc
 4. 添加新的环境变量，openocd，添加到与path平级的系统变量。
 ![541](assets/cmake开发环境/file-20260716212802295.png)
 ## （二）vscode拓展
+- clangd
+- CMake Language Support
+- Cortex-Debug
+- LinkerScript
+- Material Icon Theme
+## （三）模板工程
+适配芯片：STM32F407ZGT6
+DEMO链接: https://pan.baidu.com/s/14EFUeQPD89I2WextZFJsxg?pwd=nbmp 提取码: nbmp
