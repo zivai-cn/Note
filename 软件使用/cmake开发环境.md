@@ -1,5 +1,6 @@
 # 一、笔记介绍
 本笔记内容来自bilibili网站up主ControlCoreX。主要讲解了在vscode中使用cmake进行stm32开发的环境配置。
+随笔记附赠一份模板工程，同样来自up主。链接如下：
 # 二、介绍vscode
 1. workspace
 在vscode中打开一个文件夹，软件就默认加载这个文件夹为workspace，会在该文件夹下生成一个workspace.json。
@@ -10,3 +11,5 @@ settings的级别：settings有两个，分别是workspace的settings还有user�
 3. task
 通过task，开发者可以直接使用命令行指令，包括make，ninja，cmake等，无需打开终端进行操作。
 task的配置文件为tasks.json，地址是workspace/.vscode/tasks.json
+# 三、模板工程的使用
+## （一）安装工具链
