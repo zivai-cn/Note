@@ -8,3 +8,8 @@
 
 ## [软件使用](https://github.com/kourimi-cn/Note/tree/main/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8)
 包含自己学习过程中认为有必要进行记录的一些软件的使用，例如vscode的环境配置，git的基本操作等。
+## [项目设计](https://github.com/kourimi-cn/Note/tree/main/%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1)
+记录本人的一些设计的想法，目前主要是关于硬件设计方面的。
+## [学习-PCB与硬件](https://github.com/kourimi-cn/Note/tree/main/%E5%AD%A6%E4%B9%A0/PCB%E4%B8%8E%E7%A1%AC%E4%BB%B6)
+目前已经学习基本器件，以及一些基本拓扑结构。后续会增加电路、数字电路、模拟电路的相关内容。
+
