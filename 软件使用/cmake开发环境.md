@@ -44,4 +44,4 @@ Platform: x86_64-pc-windows-msvc
 ```
 4. 添加新的环境变量，openocd，添加到与path平级的系统变量。
 ![541](assets/cmake开发环境/file-20260716212802295.png)
-5. 
+## （二）vscode拓展
