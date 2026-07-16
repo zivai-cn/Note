@@ -9,6 +9,5 @@
 -  [网站分享](https://github.com/kourimi-cn/Note/blob/main/%E7%BD%91%E7%AB%99%E5%88%86%E4%BA%AB.md)
 
 ## [软件使用](https://github.com/kourimi-cn/Note/tree/main/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8)
-
 ---
 包含自己学习过程中认为有必要进行记录的一些软件的使用，例如vscode的环境配置，git的基本操作等。
