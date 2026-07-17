@@ -53,3 +53,4 @@ Platform: x86_64-pc-windows-msvc
 ## （三）模板工程
 适配芯片：STM32F407ZGT6
 DEMO链接: https://pan.baidu.com/s/14EFUeQPD89I2WextZFJsxg?pwd=nbmp 提取码: nbmp
+# 四、详解cmake-ninja
