@@ -58,3 +58,10 @@ DEMO链接: https://pan.baidu.com/s/14EFUeQPD89I2WextZFJsxg?pwd=nbmp 提取码: 
 - 实际中项目的构建最底层是在编译器，但是直接操作编译器进行代码的开发非常麻烦，为了解决这个问题，创造了make工具。但是makefile的编写语法有些抽象，可读性比较差，因此就开发了cmake工具（cmakelist）。cmake工具是在make的更上一层的工具。
 - 构建层次：cmake->make->编译器
 ## （二）MinGW
+MinGW全称Minimalist GNU for Windows。GNU编译器只能在Linux上运行，通过MinGW，可以实现在Windows PC上运行编译器。此外还有arm编译器等，只能在单片机上运行。
+MinGW中集成了make工具，在我们的开发环境中，下载MinGW实际上也就是为了使用这个make工具。
+## （三）ninja
+Ninja工具与make工具平级，Ninja的代码语法极其抽象，开发者难以阅读，因此必须依赖更高层级的工具的调用才能使用，相比之下，make工具语法会平易近人许多，所以说make可以直接使用。
+- Ninja的设计是为了方便电脑阅读，设计的核心目的是为了更快的编译速度。
+## （四）交叉编译器
+在A上运行的编译器，编译出的结果文件运行在B平台上，这个编译器就是交叉编译器。
