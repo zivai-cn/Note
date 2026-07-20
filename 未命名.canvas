@@ -1,0 +1,18 @@
+{
+	"nodes":[
+		{"id":"3684431c7e271b1d","type":"text","text":"Project","x":-320,"y":-140,"width":125,"height":50},
+		{"id":"6f8239f7975bd617","type":"text","text":"cmake","x":-140,"y":-340,"width":250,"height":60},
+		{"id":"76720cd08ae0ec12","type":"text","text":"core","x":-140,"y":-240,"width":250,"height":60},
+		{"id":"5abfb4b4732536bc","type":"text","text":"Inc","x":180,"y":-270,"width":80,"height":60},
+		{"id":"5202e64a6f0feeec","type":"text","text":"Src\n","x":180,"y":-190,"width":80,"height":50},
+		{"id":"c83d69161566a272","type":"text","text":"CMSIS","x":196,"y":-80,"width":228,"height":50},
+		{"id":"ee3894619f6114fa","type":"text","text":"Cmakelist.tet","x":-140,"y":100,"width":250,"height":60,"color":"5"},
+		{"id":"4e38a4ce4fa7b736","type":"text","text":"XXX_FLASH.ld","x":-140,"y":200,"width":250,"height":60,"color":"5"},
+		{"id":"03f0f2e897c7b708","type":"text","text":"Drivers","x":-140,"y":-40,"width":250,"height":60},
+		{"id":"e1518bc8f6d17d0b","type":"text","text":"XXX_HAL_Driver","x":196,"y":20,"width":228,"height":50}
+	],
+	"edges":[
+		{"id":"bc288aff7668478c","fromNode":"76720cd08ae0ec12","fromSide":"right","toNode":"5abfb4b4732536bc","toSide":"left"},
+		{"id":"b525e08fb1bea419","fromNode":"76720cd08ae0ec12","fromSide":"right","toNode":"5202e64a6f0feeec","toSide":"left"}
+	]
+}
