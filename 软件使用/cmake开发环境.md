@@ -67,7 +67,8 @@ Ninja工具与make工具平级，Ninja的代码语法极其抽象，开发者难
 在A上运行的编译器，编译出的结果文件运行在B平台上，这个编译器就是交叉编译器。例如：arm编译器。
 ## （五）clangd（llvm）
 clangd是一个语法高亮提示工具，如果需要使用需要前后端两个部分。后端需要在工具链中下载clangd文件，前端需要在编译界面软件中添加插件。
-# 五、STM32工程结构
+# 五、更方便的命令行调用
+
 # 六、cubemx的cmake移植
 这里我以stm32f4xx芯片举例，在下文中，我会指出，不同的芯片具体应该如何进行配置。
 1. cubemx的配置。
@@ -229,7 +230,7 @@ clangd是一个语法高亮提示工具，如果需要使用需要前后端两�
 }
 
 ```
-- CMakeLists.txt。
+- CMakeLists.txt。需要进行修改的地方已经在文件中标注。
 ```CMakeLists.txt
 cmake_minimum_required(VERSION 3.20)
 
@@ -273,7 +274,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".elf")
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
 
-    STM32F407xx          # ← 改成你芯片对应的宏（CubeMX 的 main.h 里有）
+    STM32F407xx          # ←---改成你芯片对应的宏（CubeMX 的 main.h 里有）
 
     USE_FULL_LL_DRIVER
 
@@ -299,7 +300,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
     "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
 
-)
+)     #??????
 
   
 
@@ -327,7 +328,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 # ==================== ⑥ 应用层源文件 ====================
 
-target_sources(${PROJECT_NAME} PRIVATE
+target_sources(${PROJECT_NAME} PRIVATE 
 
     "${CMAKE_SOURCE_DIR}/Core/Src/main.c"
 
@@ -344,10 +345,10 @@ target_sources(${PROJECT_NAME} PRIVATE
     "${CMAKE_SOURCE_DIR}/Core/Src/sysmem.c"
 
 )
-
+         # ←---如果你添加了新的文件、文件夹进去，需要将目录填写在这里并重新构建。
   
 
-# ==================== ⑦ 汇编启动文件 ====================//yami
+# ==================== ⑦ 汇编启动文件 ====================
 
 target_sources(${PROJECT_NAME} PRIVATE
 
@@ -427,7 +428,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 target_link_options(${PROJECT_NAME} PRIVATE
 
-    -T${CMAKE_SOURCE_DIR}/STM32F407XX_FLASH.ld   # ← CubeMX 生成的名字
+    -T${CMAKE_SOURCE_DIR}/STM32F407XX_FLASH.ld   # ←--- CubeMX 生成的名字
 
     -Wl,-Map=${PROJECT_NAME}.map
 
@@ -445,3 +446,87 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
 )
 ```
+- cortex_m4.cmake。这个需要你查询自己的芯片内核究竟是什么，有m4、m7、m33等。这里目前我只有m4的内核文件。
+```cortex_m4.cmake
+set(CPU_FLAGS "-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16")
+
+  
+
+set(CMAKE_SYSTEM_NAME Generic)
+
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+  
+
+find_program(COMPILER_ON_PATH "arm-none-eabi-gcc.exe")
+
+  
+
+if(COMPILER_ON_PATH)
+
+    get_filename_component(ARM_TOOLCHAIN_PATH ${COMPILER_ON_PATH} DIRECTORY)
+
+    message(STATUS "Using ARM GCC from path = ${ARM_TOOLCHAIN_PATH}")
+
+else()
+
+    message(FATAL_ERROR "Unable to find ARM GCC (arm-none-eabi-gcc.exe). Add to your PATH")
+
+endif()
+
+  
+
+set(CMAKE_C_COMPILER ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-gcc.exe)
+
+set(CMAKE_CXX_COMPILER ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-g++.exe)
+
+set(CMAKE_ASM_COMPILER ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-gcc.exe)
+
+set(CMAKE_LINKER ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-gcc.exe)
+
+set(CMAKE_CPP ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-cpp.exe)
+
+set(CMAKE_SIZE_UTIL ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-size.exe)
+
+set(CMAKE_OBJCOPY ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-objcopy.exe)
+
+set(CMAKE_OBJDUMP ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-objdump.exe)
+
+set(CMAKE_NM_UTIL ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-gcc-nm.exe)
+
+set(CMAKE_AR ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-gcc-ar.exe)
+
+set(CMAKE_RANLIB ${ARM_TOOLCHAIN_PATH}/arm-none-eabi-gcc-ranlib.exe)
+
+  
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+
+  
+
+set(SPECS_FLAGS "--specs=nosys.specs --specs=nano.specs")
+
+set(COMMON_FLAGS "-ffunction-sections -fdata-sections -Wall -Wdouble-promotion -Wno-sign-compare -Wno-psabi -g3 -ggdb3")
+
+set(ASM_FLAGS "-x assembler-with-cpp")
+
+set(CXX_FLAGS "-fno-rtti -fno-exceptions -fno-threadsafe-statics -Wsuggest-override -Wno-register")
+
+  
+
+set(CMAKE_C_FLAGS "${CPU_FLAGS} ${COMMON_FLAGS} ${SPECS_FLAGS}")
+
+set(CMAKE_CXX_FLAGS "${CPU_FLAGS} ${COMMON_FLAGS} ${SPECS_FLAGS} ${CXX_FLAGS}")
+
+set(CMAKE_ASM_FLAGS "${CPU_FLAGS} ${SPECS_FLAGS} -x assembler-with-cpp")
+
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--no-warn-rwx-segments,--print-memory-usage")
+
+```
+4. 全部移植完成，请保存文件。
