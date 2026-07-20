@@ -70,7 +70,378 @@ clangd是一个语法高亮提示工具，如果需要使用需要前后端两�
 # 五、STM32工程结构
 # 六、cubemx的cmake移植
 这里我以stm32f4xx芯片举例，在下文中，我会指出，不同的芯片具体应该如何进行配置。
-1. cubemx的配置
+1. cubemx的配置。
 - 在project Manager中，设置toolchain/IDE为cmake，Default Compiler/Linker为GCC。
-2. 了解cubumx生成hal库代码的文件结构
-- 
+2. 了解cubumx生成hal库代码的文件结构。
+- 结构如下图，红色标注为需要自己添加或者更改的部分。
+- cmake文件夹下存放的是cmake编译相关的配置，包括gcc配置，clang配置，系统内核调用配置等。这里需要我们手动添加arm内核的调用配置cortex_mX.cmake。
+- core文件夹中存放的是项目核心代码，自己添加的项目相关文件也可以放在这里，推荐在core的下级新建一个文件夹进行存放。Inc中存放HAL库的接口.c文件，Src中存放HAL库的接口.h文件。
+- Drivers文件夹中存放的是底层文件，包括HAL库驱动以及CMSIS驱动代码。平时基本上不会需要动这里。
+- CMakeLists.txt，这个文件是cmake的核心文件，cmake编译器调取的核心文件。cubemx会自动生成，但是并不符合我们的使用需求，所以需要自己重新编写。
+- .vscode，这个文件夹中的内容全部需要自己编写。launch.json中编写debug的配置，tasks.json编写命令行调用配置。
+![848](assets/cmake开发环境/file-20260720210718876.png)
+3. 对文件进行的修改。
+- .vscode。launch.json文件不需要进行修改，直接复制即可。tasks.json文件需要对openocd的设置进行一些修改。将./build/test_for_cmake.elf位置替换成自己项目的名称。
+``` launch.json
+{
+
+    "version": "0.2.0",
+
+    "configurations": [
+
+        {
+
+            "cwd": "${workspaceRoot}",
+
+            "type": "cortex-debug",
+
+            "request": "launch",
+
+            "name": "cmsis-dap",
+
+            "servertype": "openocd",
+
+            "executable": "./build/test_for_cmake.elf",
+
+            "runToEntryPoint": "main",
+
+            // "svdFile": "./src/driver/target/stm32h7/svd/STM32H7B0x.svd",
+
+            "configFiles": [
+
+                "cmsis-dap.cfg",
+
+                "stm32f4x.cfg"
+
+            ],
+
+            "toolchainPrefix": "arm-none-eabi"
+
+        }
+
+    ]
+
+}
+
+```
+
+```tasks.json
+{
+
+    "version": "2.0.0",
+
+    "tasks": [
+
+        {
+
+            "label": "CMake Configure",
+
+            "type": "shell",
+
+            "command": "cmake",
+
+            "args": [
+
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
+
+                "-GNinja",
+
+                "-Bbuild"
+
+            ],
+
+            "group": {
+
+                "kind": "build",
+
+                "isDefault": true
+
+            }
+
+        },
+
+        {
+
+            "label": "CMake Build",
+
+            "type": "shell",
+
+            "command": "cmake",
+
+            "args": [
+
+                "--build",
+
+                "build",
+
+                "--target",
+
+                "all"
+
+            ],
+
+            "group": {
+
+                "kind": "build",
+
+                "isDefault": true
+
+            }
+
+        },
+
+        {
+
+            "label": "Flash",
+
+            "type": "shell",
+
+            "command": "openocd",
+
+            "args": [
+
+                "-f",
+
+                "interface/cmsis-dap.cfg",
+
+                "-f",
+
+                "target/stm32f4x.cfg",
+
+                "-c",
+
+                "program ./build/test_for_cmake.elf verify reset exit"
+
+            ],
+
+            "group": {
+
+                "kind": "build",
+
+                "isDefault": true
+
+            }
+
+        }
+
+    ]
+
+}
+
+```
+- CMakeLists.txt。
+```CMakeLists.txt
+cmake_minimum_required(VERSION 3.20)
+
+  
+
+set(CMAKE_C_STANDARD 17)
+
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+set(CMAKE_CXX_STANDARD 20)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+  
+
+set(CMAKE_BUILD_TYPE Debug)
+
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/cmake/cortex_m4.cmake")
+
+  
+
+message("[ROOT] Build Type: ${CMAKE_BUILD_TYPE}")
+
+message("[ROOT] Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
+
+  
+
+project(test_for_cmake LANGUAGES C CXX ASM)
+
+  
+
+add_executable(${PROJECT_NAME})
+
+  
+
+set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".elf")
+
+  
+
+# ==================== ① 芯片宏定义 ====================
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+
+    STM32F407xx          # ← 改成你芯片对应的宏（CubeMX 的 main.h 里有）
+
+    USE_FULL_LL_DRIVER
+
+    USE_HAL_DRIVER
+
+)
+
+  
+
+# ==================== ② CMSIS-Core 头文件 ====================
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+
+    "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include"
+
+)
+
+  
+
+# ==================== ③ CMSIS 设备头文件 ====================
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+
+    "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
+
+)
+
+  
+
+# ==================== ④ 应用层头文件 ====================
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+
+    "${CMAKE_SOURCE_DIR}/Core/Inc"
+
+)
+
+  
+
+# ==================== ⑤ HAL 驱动头文件 ====================
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Inc"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"
+
+)
+
+  
+
+# ==================== ⑥ 应用层源文件 ====================
+
+target_sources(${PROJECT_NAME} PRIVATE
+
+    "${CMAKE_SOURCE_DIR}/Core/Src/main.c"
+
+    "${CMAKE_SOURCE_DIR}/Core/Src/stm32f4xx_hal_msp.c"
+
+    "${CMAKE_SOURCE_DIR}/Core/Src/stm32f4xx_it.c"
+
+    "${CMAKE_SOURCE_DIR}/Core/Src/system_stm32f4xx.c"
+
+    "${CMAKE_SOURCE_DIR}/Core/Src/gpio.c"
+
+    "${CMAKE_SOURCE_DIR}/Core/Src/syscalls.c"
+
+    "${CMAKE_SOURCE_DIR}/Core/Src/sysmem.c"
+
+)
+
+  
+
+# ==================== ⑦ 汇编启动文件 ====================//yami
+
+target_sources(${PROJECT_NAME} PRIVATE
+
+    "${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f407xx.s"
+
+)
+
+  
+
+# ==================== ⑧ HAL 驱动源文件（按需加减）====================
+
+target_sources(${PROJECT_NAME} PRIVATE
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_usart.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_wwdg.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_iwdg.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac.c"
+
+    "${CMAKE_SOURCE_DIR}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac_ex.c"
+
+    # ... 用到什么外设就加什么
+
+)
+
+  
+
+# ==================== ⑨ 链接脚本 ====================
+
+target_link_options(${PROJECT_NAME} PRIVATE
+
+    -T${CMAKE_SOURCE_DIR}/STM32F407XX_FLASH.ld   # ← CubeMX 生成的名字
+
+    -Wl,-Map=${PROJECT_NAME}.map
+
+)
+
+  
+
+# ==================== ⑩ 生成 hex / bin ====================
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+
+    COMMAND ${CMAKE_OBJCOPY} -Oihex ${PROJECT_NAME}.elf ${PROJECT_NAME}.hex
+
+    COMMAND ${CMAKE_OBJCOPY} -Obinary ${PROJECT_NAME}.elf ${PROJECT_NAME}.bin
+
+)
+```
