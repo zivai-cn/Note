@@ -8,4 +8,4 @@
 # 二、创建一个freertos示例双任务程序
 项目目标：使用freertos，实现两个完全不相关的任务的同时运行。
 步骤：
-1. 在freertos.c中创建一个初始化函数，默认创建了一个任务。
+1. 在freertos.c中创建一个初始化函数，默认创建了一个任务：defaultTaskHandle
