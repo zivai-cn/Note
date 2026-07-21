@@ -48,11 +48,14 @@ Platform: x86_64-pc-windows-msvc
 ![541](assets/cmake开发环境/file-20260716212802295.png)
 ## （二）vscode拓展
 在vscode中添加以下拓展。
-- clangd（必须）
-clangd
+- clangd
+clangd的功能：代码补全，跳转到定义、查找引用，实时语法错误、警告标红等。clangd类似于微软 C/C++ 的扩展IntelliSense，但是更加轻量，如果习惯使用这个拓展的话，也可以不添加这个。
 - CMake Language Support（必须）
+为CMakeList文件服务，提供CMake 语法高亮，函数 / 变量补全等。
 - Cortex-Debug（必须）
+调试器。
 - LinkerScript
+提供
 - Material Icon Theme
 
 ## （三）模板工程
