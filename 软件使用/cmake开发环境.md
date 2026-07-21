@@ -48,20 +48,23 @@ Platform: x86_64-pc-windows-msvc
 ![541](assets/cmake开发环境/file-20260716212802295.png)
 ## （二）vscode拓展
 在vscode中添加以下拓展。
-- clangd
+- clangd（必须）
 clangd的功能：代码补全，跳转到定义、查找引用，实时语法错误、警告标红等。clangd类似于微软 C/C++ 的扩展IntelliSense，但是更加轻量，如果习惯使用这个拓展的话，也可以不添加这个。
 - CMake Language Support（必须）
 为CMakeList文件服务，提供CMake 语法高亮，函数 / 变量补全等。
 - Cortex-Debug（必须）
 调试器。
 - LinkerScript
-提供
+提供`.ld/.lds` 链接脚本高亮。
 - Material Icon Theme
-
+提供资源管理器文件图标外观修改。
+- Task Buttons（必须）
+插件可以定义命令行功能按钮，并添加在vscode下方的状态栏中，这样，如果要执行代码构建、编译、烧录，就只需要点击按钮即可，不需要打开命令行再操作。
+这个功能的执行需要tasks.json文件，具体文件内容在下文进行展示。
 ## （三）模板工程
 适配芯片：STM32F407ZGT6
 DEMO链接: https://pan.baidu.com/s/14EFUeQPD89I2WextZFJsxg?pwd=nbmp 提取码: nbmp
-# 四、详解cmake-ninja
+# 四、在配置中需要了解的专有名称
 ## （一）构建系统的层次
 - 实际中项目的构建最底层是在编译器，但是直接操作编译器进行代码的开发非常麻烦，为了解决这个问题，创造了make工具。但是makefile的编写语法有些抽象，可读性比较差，因此就开发了cmake工具（cmakelist）。cmake工具是在make的更上一层的工具。
 - 构建层次：cmake->make->编译器
@@ -75,10 +78,7 @@ Ninja工具与make工具平级，Ninja的代码语法极其抽象，开发者难
 在A上运行的编译器，编译出的结果文件运行在B平台上，这个编译器就是交叉编译器。例如：arm编译器。
 ## （五）clangd（llvm）
 clangd是一个语法高亮提示工具，如果需要使用需要前后端两个部分。后端需要在工具链中下载clangd文件，前端需要在编译界面软件中添加插件。
-# 五、更方便的命令行调用
-Task Buttons插件可以定义命令行功能按钮，并添加在vscode下方的状态栏中，这样，如果要执行代码构建、编译、烧录，就只需要点击按钮即可，不需要打开命令行再操作。
-这个功能的执行需要tasks.json文件，具体文件内容在下文进行展示。
-# 六、cubemx的cmake移植
+# 五、cubemx的cmake移植
 这里我以stm32f4xx芯片举例，在下文中，我会指出，不同的芯片具体应该如何进行配置。
 1. cubemx的配置。
 - 在project Manager中，设置toolchain/IDE为cmake，Default Compiler/Linker为GCC。
@@ -539,3 +539,5 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--no-warn-rwx-segments,--print-mem
 
 ```
 4. 全部移植完成，请保存文件。
+# 六、stm32标准库的移植。
+标准库的移植就比较简单了。可以参考
