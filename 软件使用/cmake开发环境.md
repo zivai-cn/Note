@@ -540,4 +540,4 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--no-warn-rwx-segments,--print-mem
 ```
 4. 全部移植完成，请保存文件。
 # 六、stm32标准库的移植。
-标准库的移植就比较简单了。可以参考
+标准库的移植就比较简单了。可以直接参考示例工程中的文件，修改芯片、内核相关文件，以及对CMakeList文件、.json文件中的相关内容进行修改即可。
