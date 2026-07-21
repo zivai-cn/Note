@@ -1,17 +1,18 @@
 # 一、笔记介绍
 本笔记内容是我学习bilibili网站up主ControlCoreX的笔记。主要讲解了在vscode中使用cmake进行stm32开发的环境配置。但是在后文中，00kino添加了自己的拓展内容。
-随笔记附赠一份模板工程，同样来自up主。链接如下：https://wwboa.lanzouq.com/i7u5A3xugqed
-# 二、介绍vscode
+随笔记链接一份模板工程，同样来自up主。链接如下：[DEMO文件](https://wwboa.lanzouq.com/i7u5A3xugqed)
+# 二、介绍.vscode文件
+在后续的设置中，我们会在工程的workspace中添加一个.vscode文件夹，里面包括launch.json、tasks.json、settings.json，通过这一部分的内容，我们可以设置IDE（vscode）与工程的交互。
 1. workspace
 在vscode中打开一个文件夹，软件就默认加载这个文件夹为workspace，会在该文件夹下生成一个workspace.json。
 workspace就相当于其他编译器如keil的建立的工程项目。
 2. settings
 vscode提供了ui界面进行设置，同时也可以通过settings.json进行设置，在后续的操作中，需要通过settings.json进行设置。
-settings的级别：settings有两个，分别是workspace的settings还有user的settings。user的settings是全局设置，workspace的settings针对的是这个工作文件，移植到其他项目的文件夹下同样会生效。储存地址是workspace/.vscode/settings.json。workspace的settings优先级要高于user。
+settings的级别：settings有两个，分别是workspace的settings还有user的settings。user的settings是全局设置，workspace的settings针对的是这个工作文件，移植到其他项目的文件夹下同样会生效。workspace的settings优先级要高于user。
 3. task
-通过task，开发者可以直接使用命令行指令，包括make，ninja，cmake等，无需打开终端进行操作。
-task的配置文件为tasks.json，地址是workspace/.vscode/tasks.json
-- 在后续的设置中，我们会在工程中添加一个.vscode文件夹，里面包括通过这一部分的内容，我们可以对
+tasks.json是任务配置文件，一般配置编译、烧录等事件。通过task，开发者可以直接使用命令行指令，包括make，ninja，cmake等，无需打开终端进行操作。
+4. launch
+launch.json 是VSCode调试器的配置文件，里面会设置调试相关内容。
 # 三、模板工程的使用
 ## （一）安装工具链
 1. 下载工具链，建议放在d盘的一个专门用来放置环境相关文件的地方。包括：cmake，ninja，arm-gnu-toolchain，openocd，clangd
@@ -43,14 +44,17 @@ clangd version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e
 Features: windows
 Platform: x86_64-pc-windows-msvc
 ```
-4. 添加新的环境变量，openocd，添加到与path平级的系统变量。
+4. 添加新的环境变量，openocd，添加到与path平级的系统变量。命名必须是大写的SCRIPTS。
 ![541](assets/cmake开发环境/file-20260716212802295.png)
 ## （二）vscode拓展
-- clangd
-- CMake Language Support
-- Cortex-Debug
+在vscode中添加以下拓展。
+- clangd（必须）
+clangd
+- CMake Language Support（必须）
+- Cortex-Debug（必须）
 - LinkerScript
 - Material Icon Theme
+
 ## （三）模板工程
 适配芯片：STM32F407ZGT6
 DEMO链接: https://pan.baidu.com/s/14EFUeQPD89I2WextZFJsxg?pwd=nbmp 提取码: nbmp
