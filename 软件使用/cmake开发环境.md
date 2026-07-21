@@ -1,6 +1,7 @@
 # 一、笔记介绍
-本笔记内容来自bilibili网站up主ControlCoreX。主要讲解了在vscode中使用cmake进行stm32开发的环境配置。
+本笔记内容是我学习bilibili网站up主ControlCoreX的笔记。主要讲解了在vscode中使用cmake进行stm32开发的环境配置。但是在后文中，00kino添加了自己的拓展内容。
 随笔记附赠一份模板工程，同样来自up主。链接如下：
+
 # 二、介绍vscode
 1. workspace
 在vscode中打开一个文件夹，软件就默认加载这个文件夹为workspace，会在该文件夹下生成一个workspace.json。
