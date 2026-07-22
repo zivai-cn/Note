@@ -5,4 +5,6 @@
 - Context：上下文，每次Prompt提交，AI会将Context一起打包发送给大模型，上下文将会使AI更好的理解你的问题，Context增多，Token的阅读量会不断增加。
 - Memory：记忆。如果Context超出上限，就会理解出现偏差，常见做法是接近超出Context时，让AI将上下文做一次压缩重新给AI理解，这个压缩信息就是Memory。
 - RAG：检索增强生成。会将你和AI的交流内容储存为片段，当需要调取之前的相关内容，AI就可以对这份资料进行检索，回答你的问题。
-- Function Calling：函数调用。
+- Function Calling：函数调用。可以让AI使用工具。（AI输出工具调用指令）
+- MCP：model Context protocol，模型上下文协议。统一第三方工具的接口函数协议（统一接口格式）
+- Agent：智能体。会自己思考，调用工具，实现系统完成整项任务。
