@@ -1,7 +1,7 @@
 - LLM：large language model，大语言模型。
 - Token：大语言模型理解文字的最小单元，可能为一个标点、一个词、一个字。
 - Prompt：提示词，就是你对ai进行的提问。
-- Prompt Engineering：提示词工程，任务就是对提示词进行规划，
+- Prompt Engineering：提示词工程，任务就是对提示词进行规划，使AI能更好的理解你。
 - Context：上下文，每次Prompt提交，AI会将Context一起打包发送给大模型，上下文将会使AI更好的理解你的问题，Context增多，Token的阅读量会不断增加。
 - Memory：记忆。如果Context超出上限，就会理解出现偏差，常见做法是接近超出Context时，让AI将上下文做一次压缩重新给AI理解，这个压缩信息就是Memory。
 - RAG：检索增强生成。会将你和AI的交流内容储存为片段，当需要调取之前的相关内容，AI就可以对这份资料进行检索，回答你的问题。
