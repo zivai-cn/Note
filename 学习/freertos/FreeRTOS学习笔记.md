@@ -91,3 +91,7 @@ xTaskResumeAll(); // 恢复调度
 ```
 # 四、队列
 目标：理解队列的运行，了解freertos中队列的相关函数。
+1. IPC机制
+inter  process communication，进程间通信，也指任务间通信，用于不同任务/进程之间的数据传输与同步的机制。
+2. Queue队列
+队列是freertos中最常见的IPC机制，具体是：创建一个
