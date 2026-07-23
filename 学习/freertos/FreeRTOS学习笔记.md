@@ -36,11 +36,17 @@ TrustZone_ID tz_module; // TrustZone 相关（通常 0）
 uint32_t reserved; // 保留 
 } osThreadAttr_t;
 
-BaseType_t xTaskCreate( TaskFunction_t pxTaskCode,
-                            const char * const pcName,      /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-                            const configSTACK_DEPTH_TYPE usStackDepth,
-                            void * const pvParameters,
-                            UBaseType_t uxPriority,
-                            TaskHandle_t * const pxCreatedTask )
+//FreeRTOS 原生的任务创建函数
+BaseType_t xTaskCreate(
+    TaskFunction_t              pxTaskCode,     // ① 任务函数
+    const char * const          pcName,         // ② 任务名称
+    const configSTACK_DEPTH_TYPE usStackDepth,  // ③ 栈深度
+    void * const                pvParameters,   // ④ 任务参数
+    UBaseType_t                 uxPriority,     // ⑤ 优先级
+    TaskHandle_t * const        pxCreatedTask   // ⑥ 任务句柄（输出）
+);
 ```
 4. 创建一个新的队列
+```c
+xTaskCreate(StartDefaultTask, "defaultTask", 128 * 4, NULL, osPriorityNormal, &defaultTaskHandle);
+```
