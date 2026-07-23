@@ -26,27 +26,18 @@
 - 用二值信号量实现中断与任务之间的同步。
 - 用互斥锁保护共享资源（如 UART 打印）。
 ## 阶段三：中断管理、定时器与资源管理
-
 **学习目标：** 理解 FreeRTOS 在中断上下文中的行为，以及软件定时器和内存管理。
-
 **核心知识点：**
-
 - **中断管理：**
     - `FromISR` 系列 API 的使用（如 `xQueueSendFromISR()`）。
     - 中断优先级的配置（`configMAX_SYSCALL_INTERRUPT_PRIORITY`），理解哪些中断可以调用 FreeRTOS API。
     - 延迟中断处理（Deferred Interrupt Processing）：在 ISR 中只做最少的事情，将耗时处理交给任务。
 - **软件定时器（Software Timer）：** 单次定时器和周期定时器，`xTimerCreate()` / `xTimerStart()`。
 - **内存管理（Heap）：** FreeRTOS 的 5 种内存分配方案（`heap_1.c` ~ `heap_5.c`），各自的优缺点和适用场景。
-
 **动手实践：**
-
 - 编写一个按键中断，在 ISR 中向任务发送信号量。
 - 使用软件定时器实现一个周期性的数据采集。
-
----
-
 ## 阶段四：高级特性深入
-
 **学习目标：** 深入理解 FreeRTOS 的高级机制，能够进行性能调优和问题排查。
 
 **核心知识点：**
