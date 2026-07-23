@@ -5,8 +5,8 @@
 ![](assets/FreeRTOS学习笔记/file-20260721164321153.png)
 ![](assets/FreeRTOS学习笔记/file-20260721164340893.png)
 ![](assets/FreeRTOS学习笔记/file-20260721164510684.png)
-# 二、创建一个freertos示例双任务程序
-项目目标：使用freertos，实现两个完全不相关的任务的同时运行。
+# 二、任务系统的创建与调度
+项目目标：能够使用freertos创建任务。
 1. 在freertos.c中创建一个初始化函数，默认创建了一个任务：defaultTaskHandle。
 ![](assets/FreeRTOS学习笔记/file-20260721171444987.png)
 2. 谈CMSIS。
@@ -56,7 +56,4 @@ pdMS_TO_TICKS();      //参数为时间（单位ms）
 vTaskDelay(pdMS_TO_TICKS(100));       //相对延时，从延时函数开始工作时刻起等100ms，无法保证什么时候跳出。
 vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100)); //绝对延时，保证整个任务周期性清醒。
 ```
-4. 创建一个新的队列
-```c
-xTaskCreate(vTask1_LED,"LED_Task",128,NULL,1,NULL);
-```
+# 三、任务状态
