@@ -51,5 +51,5 @@ pdMS_TO_TICKS();      //参数为时间（单位ms）
 ```
 4. 创建一个新的队列
 ```c
-xTaskCreate(StartDefaultTask, "defaultTask", 128 * 4, NULL, osPriorityNormal, &defaultTaskHandle);
+xTaskCreate(vTask1_LED,"LED_Task",128,NULL,1,NULL);
 ```
