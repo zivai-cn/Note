@@ -64,7 +64,18 @@ vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100)); //绝对延时，保证整�
 2. 关键函数
 ```c
 //任务的挂起与恢复
+vTaskSuspend(xTaskHandle);           // 暂停某个任务
+vTaskResume(xTaskHandle);            // 恢复某个任务
+vTaskSuspendAll();                   // 暂停调度器（临界区用）
+xTaskResumeAll();                    // 恢复调度器
 
+// 删除任务
+vTaskDelete(NULL);                   // 删除自己
+vTaskDelete(xTaskHandle);            // 删除别人
+
+// 优先级操作
+uxTaskPriorityGet(NULL);             // 获取自己优先级
+vTaskPrioritySet(NULL, 3);           // 修改自己优先级
 ```
 3. 调试
 Freertos创建任务后，会默认直接把优先级最大的任务直接挂到运行态。
