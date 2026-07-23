@@ -13,11 +13,28 @@
 3. 整个任务的函数调用流程。以defaultTaskHandle为例，defaultTaskHandle<--osThreadNew(CMSIS文件)，其中osThreadNew是对xTaskCreate()的一层封装。
 ```c
 /// Create a thread and add it to Active Threads.
-/// \param[in]     func          thread function.
-/// \param[in]     argument      pointer that is passed to the thread function as start argument.
-/// \param[in]     attr          thread attributes; NULL: default values.
-/// \return thread ID for reference by other functions or NULL in case of error.
+/// \param[in]     func          thread function.执行功能的函数
+/// \param[in]     argument      pointer that is passed to the thread function as start argument.给功能函数传递的参数
+/// \param[in]     attr          thread attributes; NULL: default values.任务属性结构体
+/// \return thread ID for reference by other functions or NULL in case of error.返回值：如果执行成功：返回任务ID，失败：返回NULL
 osThreadId_t osThreadNew (osThreadFunc_t func, void *argument, const osThreadAttr_t *attr);
+
+// osThreadAttr_t 的定义（在 cmsis_os2.h 中） 
+//常用字段：
+|name|任务名（调试用）|"LED_Task"|
+|stack_size|栈大小（**字节**，注意！）|512|
+|priority|优先级|osPriorityNormal|
+typedef struct 
+{ const char *name; // 任务名称（调试用） 
+uint32_t attr_bits; // 属性位（如 osThreadDetached） 
+void *cb_mem; // TCB 内存（通常 NULL，让系统分配） 
+uint32_t cb_size; // TCB 大小（通常 0） v
+oid *stack_mem; // 栈内存（通常 NULL，让系统分配） 
+uint32_t stack_size; // 栈大小（单位：字节）★ 
+osPriority_t priority; // 优先级（osPriorityLow ~ osPriorityRealtime7）
+TrustZone_ID tz_module; // TrustZone 相关（通常 0） 
+uint32_t reserved; // 保留 
+} osThreadAttr_t;
 
 BaseType_t xTaskCreate( TaskFunction_t pxTaskCode,
                             const char * const pcName,      /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
@@ -25,6 +42,5 @@ BaseType_t xTaskCreate( TaskFunction_t pxTaskCode,
                             void * const pvParameters,
                             UBaseType_t uxPriority,
                             TaskHandle_t * const pxCreatedTask )
-//func是osThreadNew的入口函数，
 ```
 4. 创建一个新的队列
