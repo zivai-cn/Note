@@ -21,3 +21,4 @@ osThreadId_t osThreadNew (osThreadFunc_t func, void *argument, const osThreadAtt
 
 //func是osThreadNew的入口函数，
 ```
+4. 创建一个新的队列
