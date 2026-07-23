@@ -106,3 +106,23 @@ inter  process communication，进程间通信，也指任务间通信，用于�
 队列是freertos中最常见的IPC机制，具体是：创建一个链表或数组，A任务可以向其中写入数据，B任务可以读取其中的数据。
 3. FIFO缓冲区
 First In, First Out Buffer，先入先出。具体原理以及相关操作，请在数据结构与算法中学习，这里只需要知道，Queue就是一个典型的FIFO。首先被写入的数据，也会被首先读取出来。
+4. 队列相关函数
+```c
+// 创建队列
+QueueHandle_t xQueue = xQueueCreate(
+    uxQueueLength,   // 队列能容纳多少个元素
+    uxItemSize       // 每个元素的大小（字节），建议用 sizeof(xxx)
+);
+
+// 发送（三种方式）
+xQueueSend(xQueue, &data, portMAX_DELAY);// 队列满则阻塞
+xQueueSendToBack(xQueue, &data, 0);// 从尾部入队（= Send）
+xQueueSendToFront(xQueue, &data, 0);// 从头部入队（紧急数据）
+
+// 接收
+xQueueReceive(xQueue, &data, portMAX_DELAY);// 队列空则阻塞
+
+// 查询
+uxQueueMessagesWaiting(xQueue);// 队列中还有多少数据
+uxQueueSpacesAvailable(xQueue);// 队列还有多少空位
+```
