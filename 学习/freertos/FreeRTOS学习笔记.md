@@ -45,6 +45,9 @@ BaseType_t xTaskCreate(
     UBaseType_t                 uxPriority,     // ⑤ 优先级
     TaskHandle_t * const        pxCreatedTask   // ⑥ 任务句柄（输出）
 );
+
+//将时间转换成系统节拍拍数函数
+pdMS_TO_TICKS();      //参数为时间（单位ms）
 ```
 4. 创建一个新的队列
 ```c
