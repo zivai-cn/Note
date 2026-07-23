@@ -186,15 +186,10 @@ vTaskStartScheduler();  // 启动调度器，从此不再返回
 ---
 
 ## 📅 第 2 次：任务状态机与调度器深度理解
-
 > **时间：** 2 小时 **目标：** 彻底理解任务状态转换，掌握挂起/恢复、删除、优先级动态调整
-
 ### 上半场（50 分钟）— 概念 + 代码
-
 **1. 任务状态机（20 分钟）**
-
 Plain Text
-
 ```
                     ┌──────────┐
          创建后 ──→ │  Ready   │ ←──────────────┐
@@ -211,11 +206,8 @@ Plain Text
                     │Suspended │
                     └──────────┘
 ```
-
 **2. 核心 API（15 分钟）**
-
 C
-
 ```c
 // 挂起与恢复
 vTaskSuspend(xTaskHandle);           // 暂停某个任务
@@ -231,11 +223,8 @@ vTaskDelete(xTaskHandle);            // 删除别人
 uxTaskPriorityGet(NULL);             // 获取自己优先级
 vTaskPrioritySet(NULL, 3);           // 修改自己优先级
 ```
-
 **3. 动手写代码（15 分钟）**
-
 C
-
 ```c
 // 场景：管理任务控制工作任务的启停
 TaskHandle_t xWorkerHandle = NULL;
@@ -269,20 +258,14 @@ void vManagerTask(void *pv) {
     }
 }
 ```
-
 ### 下半场（50 分钟）— 练习 + 复盘
-
 **练习（30 分钟）**
-
 1. 实现一个看门狗任务：监控 3 个工作任务的运行状态，如果某个任务"卡死"（一段时间不更新计数），就删除并重建它
 2. 用 `vTaskSuspendAll()` / `xTaskResumeAll()` 保护一段非原子操作，观察效果
 3. 动态修改某个任务的优先级，验证抢占行为的变化
-
 **资源清单**
-
 - FreeRTOS 官方文档：[Task States and Scheduling](https://www.freertos.org/RTOS-task-states.html)
 - 《Mastering the FreeRTOS Real Time Kernel》第 4 章
-
 **复盘 10 问（20 分钟）**
 
 1. 任务被 `vTaskSuspend()` 后，它的栈空间会被释放吗？
