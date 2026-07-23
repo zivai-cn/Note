@@ -51,9 +51,10 @@ BaseType_t xTaskCreate(
 
 //将时间转换成系统节拍拍数函数
 pdMS_TO_TICKS();      //参数为时间（单位ms）
+
 //延时函数
-vTaskDelay(pdMS_TO_TICKS(100));       // 相对延时——从调用时刻起等 100ms
-vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100)); // 绝对延时——保证精确周期
+vTaskDelay(pdMS_TO_TICKS(100));       //相对延时，从延时函数开始工作时刻起等100ms，无法保证跳出的时间。
+vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100)); //绝对延时，保证精确周期
 ```
 4. 创建一个新的队列
 ```c
