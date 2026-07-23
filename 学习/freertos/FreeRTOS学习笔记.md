@@ -1,3 +1,4 @@
+学习笔记来自00kino，学习老师包括：伟东山 bilibili，keysking bilibili。
 # 一、使用STM32CUBEMX创建freertos工程
 1. 先按照正常的创建流程创建工程，不一样的是，配置系统时钟-调试接口：serial wire，基准时钟需要选择一个定时器TIMX。
 ![](assets/FreeRTOS学习笔记/file-20260721164234669.png)
@@ -58,4 +59,5 @@ vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100)); //绝对延时，保证整�
 ```
 # 三、任务状态机
 目标：了解任务的几种状态，状态之间是如何进行交换的。能够使用操纵任务状态的几个函数。
-1. 任务状态：（1）
+1. 任务状态：（1）ready，就绪态。创建的任务首先进入ready，之后，只要任务没有被执行，就会进入就绪态。（2）running，运行态。时间片流转，任务执行。（3）blocked，阻塞态。当任务被延时，或者设置后需要接收数据才能继续运行，任务就会blocked（4）suspended，挂起态。程序可以通过函数要求任务suspended，此时任务将不会再进入ready，直到再通过函数，让任务跳出suspended，进入ready。
+2. 
