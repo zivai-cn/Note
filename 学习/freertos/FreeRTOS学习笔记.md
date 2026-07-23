@@ -41,7 +41,7 @@ BaseType_t xTaskCreate(
     TaskFunction_t              pxTaskCode,     // ① 任务函数
     const char * const          pcName,         // ② 任务名称
     const configSTACK_DEPTH_TYPE usStackDepth,  // ③ 栈深度
-    void * const                pvParameters,   // ④ 任务参数
+    void * const                pvParameters,   // ④ 任务参数(给任务函数的传参)
     UBaseType_t                 uxPriority,     // ⑤ 优先级
     TaskHandle_t * const        pxCreatedTask   // ⑥ 任务句柄（输出）
 );
