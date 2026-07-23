@@ -260,9 +260,9 @@ void vManagerTask(void *pv) {
 ```
 ### 下半场（50 分钟）— 练习 + 复盘
 **练习（30 分钟）**
-1. 实现一个看门狗任务：监控 3 个工作任务的运行状态，如果某个任务"卡死"（一段时间不更新计数），就删除并重建它
-2. 用 `vTaskSuspendAll()` / `xTaskResumeAll()` 保护一段非原子操作，观察效果
-3. 动态修改某个任务的优先级，验证抢占行为的变化
+1. 实现一个看门狗任务：监控 3 个工作任务的运行状态，如果某个任务"卡死"（一段时间不更新计数），就删除并重建它。——任务函数每执行一次计数器就自增一次，看门狗任务每隔一段时间就苏醒一次，比较上次苏醒时记录的计数器的值，如果一样就认为卡住，vTaskDelete，然后xTaskCreate。
+2. 用 `vTaskSuspendAll()` / `xTaskResumeAll()` 保护一段非原子操作，观察效果。
+3. 动态修改某个任务的优先级，验证抢占行为的变化。
 **资源清单**
 - FreeRTOS 官方文档：[Task States and Scheduling](https://www.freertos.org/RTOS-task-states.html)
 - 《Mastering the FreeRTOS Real Time Kernel》第 4 章
