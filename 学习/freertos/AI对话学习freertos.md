@@ -268,9 +268,9 @@ void vManagerTask(void *pv) {
 - 《Mastering the FreeRTOS Real Time Kernel》第 4 章
 **复盘 10 问（20 分钟）**
 1. 任务被 `vTaskSuspend()` 后，它的栈空间会被释放吗？答：不会，只是任务进入挂起态，等任务恢复的时候栈空间数据也会被同时恢复。
-2. `vTaskDelete()` 删除任务后，该任务申请的动态内存会自动释放吗？答：会。
-3. 如果一个任务挂起自己（`vTaskSuspend(NULL)`），它还能被自己恢复吗？答：能，使用xTaskResume。
-4. 调度器挂起（`vTaskSuspendAll()`）期间，滴答定时器中断还会发生吗？答：不清楚。
+2. `vTaskDelete()` 删除任务后，该任务申请的动态内存会自动释放吗？答：会。答：只有通过`xTaskCreate`创建的动态内存分配会被释放，其余途径创建的都不会，包括xTaskCreateStatic 、pvPortMalloc()等。
+3. 如果一个任务挂起自己（`vTaskSuspend(NULL)`），它还能被自己恢复吗？答：能，使用xTaskResume。答：不能，只能是其他任务调用xTaskResume。
+4. 调度器挂起（`vTaskSuspendAll()`）期间，滴答定时器中断还会发生吗？答：不清楚。答：会，但是每次中断后都会检测到任务被挂起，就继续计时，直到调度器恢复。
 5. `vTaskSuspendAll()` 和 `taskENTER_CRITICAL()` 有什么区别？答：不清楚。
 6. 删除一个正在等待信号量的任务会发生什么？答：被直接删除。
 7. 如何在删除任务时安全释放它持有的资源？（提示：删除钩子）答：不清楚。
