@@ -110,9 +110,21 @@ First In, First Out Buffer，先入先出。具体原理以及相关操作，请
 4. 队列相关函数
 ```c
 // 创建队列
-QueueHandle_t xQueue = xQueueCreate(
-    uxQueueLength,   // 队列能容纳多少个元素
-    uxItemSize       // 每个元素的大小（字节），建议用 sizeof(xxx)
+//动态队列创建-内核从堆上分配内存
+QueueHandle_t xQueue;//命名句柄
+xQueue = xQueueCreate(
+	uxQueueLength,   // 队列能容纳多少个元素
+    uxItemSize       // 每个元素的大小（字节），用 sizeof(xxx)
+);
+//静态队列创建-自己规定内存
+static QueueHandle_t xMyQueue;//命名句柄
+static uint8_t ucQueueStorage[QUEUE_LENGTH * ITEM_SIZE];// 数据区 
+static StaticQueue_t xQueueControlBlock; // 控制块
+xMyQueue = xQueueCreateStatic( 
+	UBaseType_t uxQueueLength, // 队列能容纳的最大元素个数 
+	UBaseType_t uxItemSize, // 每个元素的大小（字节） 
+	uint8_t *pucQueueStorageBuffer, // 你提供的数据存储区
+	StaticQueue_t *pxQueueBuffer // 你提供的队列控制块 
 );
 
 // 发送（三种方式）
