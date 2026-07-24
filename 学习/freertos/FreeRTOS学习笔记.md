@@ -136,6 +136,7 @@ xQueueSendToFront(xQueue, &data, 0);// 从头部入队（紧急数据）
 
 // 接收
 xQueueReceive(xQueue, &data, portMAX_DELAY);// 队列空则阻塞
+//去队列里拿数据，如果没有数据，就睡觉等着，但最多等portMAX_DELAY，然后就会返回error，同时再次进入等待。如果一直有数据进入，那就会一直接收。
 
 // 查询
 uxQueueMessagesWaiting(xQueue);// 队列中还有多少数据
