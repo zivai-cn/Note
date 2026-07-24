@@ -278,17 +278,11 @@ void vManagerTask(void *pv) {
 9. 空闲任务永远不会被删除，为什么？答：没有任务运行时必须有空闲任务可以运行。
 10. 如果所有用户任务都被删除或挂起，系统会怎样？答：直接跑飞。
 ---
-
 ## 📅 第 3 次：队列 — 任务间数据传递的核心
-
 > **时间：** 2 小时 **目标：** 掌握队列的创建、发送、接收，理解阻塞机制
-
 ### 上半场（50 分钟）— 概念 + 代码
-
 **1. 队列核心概念（15 分钟）**
-
 Plain Text
-
 ```
 队列是 FreeRTOS 中最核心的 IPC 机制，本质是一个 FIFO 缓冲区
 
@@ -300,13 +294,8 @@ Plain Text
                       入队   队列   出队
                            满则阻塞
 ```
-
 **关键理解：** 阻塞 + 超时是队列的精髓——读空队列时任务会自动阻塞，数据来了自动唤醒，不用写轮询代码！
-
 **2. 核心 API（15 分钟）**
-
-C
-
 ```c
 // 创建队列
 QueueHandle_t xQueue = xQueueCreate(
@@ -326,11 +315,8 @@ xQueueReceive(xQueue, &data, portMAX_DELAY);     // 队列空则阻塞
 uxQueueMessagesWaiting(xQueue);                  // 队列中还有多少数据
 uxQueueSpacesAvailable(xQueue);                  // 队列还有多少空位
 ```
-
 **3. 动手写代码（20 分钟）**
-
 C
-
 ```c
 // 经典场景：生产者-消费者
 QueueHandle_t xDataQueue;
@@ -365,23 +351,16 @@ xDataQueue = xQueueCreate(5, sizeof(int32_t));  // 容量 5，每个元素 4 字
 xTaskCreate(vProducerTask, "Producer", 128, NULL, 2, NULL);
 xTaskCreate(vConsumerTask, "Consumer", 128, NULL, 2, NULL);
 ```
-
 ### 下半场（50 分钟）— 练习 + 复盘
-
 **练习（30 分钟）**
-
 1. **生产者-消费者速度不匹配实验：** 让生产者 50ms 产一个，消费者 200ms 消费一个，队列会满吗？观察 `uxQueueMessagesWaiting()`
 2. **多生产者单消费者：** 创建 3 个生产者任务，1 个消费者，观察数据流
 3. **传递结构体：** 把队列元素从 `int32_t` 改成包含时间戳和数据的结构体，实现"带时间戳的消息传递"
 4. **紧急数据：** 用 `xQueueSendToFront()` 实现"紧急消息插队"功能
-
 **资源清单**
-
 - FreeRTOS 官方文档：[Queues](https://www.freertos.org/Embedded-RTOS-Queues.html)
 - 《Mastering the FreeRTOS Real Time Kernel》第 5 章
-
 **复盘 10 问（20 分钟）**
-
 1. 队列是"拷贝"数据还是"传递指针"？这对内存有什么影响？
 2. `portMAX_DELAY` 的值是多少？设为 0 又是什么含义？
 3. 如果多个任务同时等待同一个队列的数据，当数据到达时谁先被唤醒？
