@@ -1,4 +1,5 @@
 学习笔记来自00kino，学习老师包括：伟东山 bilibili，keysking bilibili。
+需要注意，由于自身特性，在freertos的学习过程中，你会看到两套API函数，一个来自Freertos，一个来自CMSIS，这里00kino认为，FreeRtos的操作更加底层，因此笔记中使用的都是FreeRtos的原生API，但是CUBEMX生成的代码默认使用的都是CMSIS的API，需要注意。
 # 一、使用STM32CUBEMX创建freertos工程
 1. 先按照正常的创建流程创建工程，不一样的是，配置系统时钟-调试接口：serial wire，基准时钟需要选择一个定时器TIMX。
 ![](assets/FreeRTOS学习笔记/file-20260721164234669.png)
