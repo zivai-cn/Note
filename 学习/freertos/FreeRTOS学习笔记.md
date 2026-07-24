@@ -130,7 +130,9 @@ xMyQueue = xQueueCreateStatic(
 );
 
 // 发送（三种方式）
-xQueueSend(xQueue, &data, portMAX_DELAY);// 队列满则阻塞。该函数有返回值，如果data队列已满，返回pdPASS。
+xQueueSend(xQueue, &data, portMAX_DELAY);// 队列满则阻塞。
+//该函数有返回值，如果data队列已满，返回pdPASS。
+//如果队列有空间同时一直有数据传进来，那么它就会一直往队列里塞数据和portMAX_DELAY没有关系，portMAX_DELAY规定的是多长时间检查。
 xQueueSendToBack(xQueue, &data, 0);// 从尾部入队（= Send）
 xQueueSendToFront(xQueue, &data, 0);// 从头部入队（紧急数据）
 
