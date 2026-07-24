@@ -119,12 +119,12 @@ xQueue = xQueueCreate(
 //静态队列创建-自己规定内存
 static QueueHandle_t xMyQueue;//命名句柄
 static uint8_t ucQueueStorage[QUEUE_LENGTH * ITEM_SIZE];// 数据区 
-static StaticQueue_t xQueueControlBlock; // 控制块
-xMyQueue = xQueueCreateStatic( 
-	UBaseType_t uxQueueLength, // 队列能容纳的最大元素个数 
-	UBaseType_t uxItemSize, // 每个元素的大小（字节） 
-	uint8_t *pucQueueStorageBuffer, // 你提供的数据存储区
-	StaticQueue_t *pxQueueBuffer // 你提供的队列控制块 
+static StaticQueue_t xQueueControlBlock; // 控制块，存储内核管理任务所需要的数据。
+xMyQueue = xQueueCreateStatic(
+	QUEUE_LENGTH, 
+	ITEM_SIZE, 
+	ucQueueStorage, // 指定数据存储区 
+	&xQueueControlBlock // 指定控制块 
 );
 
 // 发送（三种方式）
