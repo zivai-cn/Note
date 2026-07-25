@@ -361,7 +361,7 @@ xTaskCreate(vConsumerTask, "Consumer", 128, NULL, 2, NULL);
 - FreeRTOS 官方文档：[Queues](https://www.freertos.org/Embedded-RTOS-Queues.html)
 - 《Mastering the FreeRTOS Real Time Kernel》第 5 章
 **复盘 10 问（20 分钟）**
-1. 队列是"拷贝"数据还是"传递指针"？这对内存有什么影响？答：传递指针，内存中的数据只是被调取，数据储存地址并没有被修改。
+1. 队列是"拷贝"数据还是"传递指针"？这对内存有什么影响？答：传递指针，内存中的数据只是被调取，数据储存地址并没有被修改。答：拷贝，队列在创建时就会划分出一块区域
 2. `portMAX_DELAY` 的值是多少？设为 0 又是什么含义？答：值可以任意设置，是唤醒的时间，设为0就是只有传递数据时才会被唤醒。
 3. 如果多个任务同时等待同一个队列的数据，当数据到达时谁先被唤醒？答：不清楚。
 4. 队列可以传递大于 `uxItemSize` 的数据吗？如果可以，怎么做？答：不能。
