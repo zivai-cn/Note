@@ -176,4 +176,16 @@ void vProducer(void *pv){
 		mag.timestamp = xTaskGetTickCount();//打上时间戳
 	}
 }
+
+//三、消息插队
+//原本的消息是按照顺序进入队列，后入后出，但是紧急消息需要首先处理，需要被排在首位
+typedef enum {//对消息进行分类
+MSG_NORMAL = 0, 
+MSG_URGENT = 1 
+} MsgType_t;
+// 发送紧急消息（队首，插队！） 
+void SendUrgent(int32_t val){
+	Msg_t msg = { MSG_URGENT, val }; 
+	xQueueSendToFront(xQueue, &msg, 0);//插到队首 
+}
 ```
