@@ -183,8 +183,7 @@ typedef enum {//对消息进行分类
 MSG_NORMAL = 0, 
 MSG_URGENT = 1 
 } MsgType_t;
-// 发送紧急消息（队首，插队！） 
-void SendUrgent(int32_t val){
+void SendUrgent(int32_t val){//发送紧急消息
 	Msg_t msg = { MSG_URGENT, val }; 
 	xQueueSendToFront(xQueue, &msg, 0);//插到队首 
 }
