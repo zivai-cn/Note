@@ -187,4 +187,18 @@ void SendUrgent(int32_t val){//发送紧急消息
 	Msg_t msg = { MSG_URGENT, val }; 
 	xQueueSendToFront(xQueue, &msg, 0);//插到队首 
 }
+void vConsumer(void *pv) {//消费者优先处理紧急消息函数 
+	Msg_t msg; 
+	for (;;) { 
+		if (xQueueReceive(xQueue, &msg, portMAX_DELAY) == pdPASS) { 
+			if (msg.type == MSG_URGENT) { 
+				printf("⚠ URGENT: %ld (processed FIRST!)\r\n", msg.value);
+			} 
+			else { 
+				printf(" Normal: %ld\r\n", msg.value); 
+			} 
+			vTaskDelay(pdMS_TO_TICKS(200)); // 模拟处理耗时
+		} 
+	}
+}
 ```

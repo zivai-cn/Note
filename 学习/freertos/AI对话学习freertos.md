@@ -361,16 +361,16 @@ xTaskCreate(vConsumerTask, "Consumer", 128, NULL, 2, NULL);
 - FreeRTOS 官方文档：[Queues](https://www.freertos.org/Embedded-RTOS-Queues.html)
 - 《Mastering the FreeRTOS Real Time Kernel》第 5 章
 **复盘 10 问（20 分钟）**
-1. 队列是"拷贝"数据还是"传递指针"？这对内存有什么影响？
-2. `portMAX_DELAY` 的值是多少？设为 0 又是什么含义？
-3. 如果多个任务同时等待同一个队列的数据，当数据到达时谁先被唤醒？
-4. 队列可以传递大于 `uxItemSize` 的数据吗？如果可以，怎么做？
-5. 队列为空时调用 `xQueueReceive()` 和队列满时调用 `xQueueSend()`，各会发生什么？
-6. 为什么 `xQueueCreate` 的参数叫 `uxItemSize` 而不是 `uxItemType`？
-7. 能从队列中"偷看"数据而不移出吗？（提示：`xQueuePeek`）
-8. 队列创建后可以动态改变大小吗？如果不能，怎么办？
-9. `xQueueOverwrite` 和 `xQueueSend` 有什么区别？（提示：队列长度为 1 时）
-10. 队列操作返回 `pdPASS` 和 `pdFAIL`，但还有个 `errQUEUE_FULL` 是什么情况？
+1. 队列是"拷贝"数据还是"传递指针"？这对内存有什么影响？答：传递指针，内存中的数据只是被调取，数据储存地址并没有被修改。
+2. `portMAX_DELAY` 的值是多少？设为 0 又是什么含义？答：值可以任意设置，是唤醒的时间，设为0就是只有传递数据时才会被唤醒。
+3. 如果多个任务同时等待同一个队列的数据，当数据到达时谁先被唤醒？答：不清楚。
+4. 队列可以传递大于 `uxItemSize` 的数据吗？如果可以，怎么做？答：不能。
+5. 队列为空时调用 `xQueueReceive()` 和队列满时调用 `xQueueSend()`，各会发生什么？答：空时，会将数据塞入队列，满时，数据会被直接舍弃。
+6. 为什么 `xQueueCreate` 的参数叫 `uxItemSize` 而不是 `uxItemType`？答：不清楚。
+7. 能从队列中"偷看"数据而不移出吗？（提示：`xQueuePeek`）答：没见过提示的这个函数。
+8. 队列创建后可以动态改变大小吗？如果不能，怎么办？答：可以动态改变大小。
+9. `xQueueOverwrite` 和 `xQueueSend` 有什么区别？（提示：队列长度为 1 时）答：没用过覆写。
+10. 队列操作返回 `pdPASS` 和 `pdFAIL`，但还有个 `errQUEUE_FULL` 是什么情况？答：err是队列爆满。
 
 ---
 
