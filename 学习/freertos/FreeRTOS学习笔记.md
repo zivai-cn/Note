@@ -144,3 +144,36 @@ xQueueReceive(xQueue, &data, portMAX_DELAY);// 队列空则阻塞
 uxQueueMessagesWaiting(xQueue);// 队列中还有多少数据
 uxQueueSpacesAvailable(xQueue);// 队列还有多少空位
 ```
+5. 应用
+```c
+//一、多生产者-单消费者
+//注：因为是多生产者，因此在向消费者传递消息的时候，需要标注信息来源。
+typedef struct {//消息结构体
+int32_t producer_id;//ID
+int32_t value; //数据
+} Msg_t;
+void vProducer(void *pv){//生产者任务
+	int32_t id = (int32_t)pv;//定义消息结构体，初始化值
+	Msg_t msg;
+	msg.producer_id = id;
+	msg.value=0;
+	for(;;){
+		//**任务代码**
+		xQueueSend(xQuenue,&msg,portMAX_DELAY);//向队列传递信息
+	}
+}
+
+//二、传递带时间戳的消息结构体
+typedef struct {
+	int32_t data;
+	TickType_t timestamp//时钟tick
+}TimeMsg_t;
+void vProducer(void *pv){
+	TimeMsg_t msg;
+	mag.data = 0;
+	for(;;){
+		//**任务代码**
+		mag.timestamp = xTaskGetTickCount();//打上时间戳
+	}
+}
+```
