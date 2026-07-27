@@ -224,7 +224,7 @@ xSemaphoreTake(xBinarySem, portMAX_DELAY);
 - API函数
 ```C
 //创建计数信号量
-SemaphoreHandle_t xSemaphore
+SemaphoreHandle_t xSemaphore;
 xSemaphore = xSemaphoreCreateCounting(max, init);//参数：资源最大值，初始被占用值
 //消耗一个资源
 xSemaphoreTake(xSemaphore,xBlockTime);//xSemaphore是等待时间  
@@ -232,5 +232,16 @@ xSemaphoreTake(xSemaphore,xBlockTime);//xSemaphore是等待时间
 xSemaphoreGive(xSemaphore);             
 ```
 3. 互斥信号量
-- 问题：优先级反转——当多个优先级不同的任务都调用一个资源时，会出现下面的情况，（任务设计：获取信号量，运行，释放信号量）存在三个优先级的任务H、M、L，L获取信号量，运行，释放信号量，接着信号被M、L执行。此时如果L任务的运行时间>高优先级任务的运行时间，也就是说低优先级任务没有释放信号量，此时高优先级任务会尝试获取信号量，最终失败，也就是说，优先级低的任务反而阻塞了高优先级的任务。
-- 解决方案：设计一个带有优先级继承机制的二进制信号量
+- 问题：优先级反转——当多个优先级不同的任务都调用一个资源时，会出现下面的情况：存在三个优先级的任务H、M、L，其中M的执行不需要信号。H获取信号量，运行，释放信号量，接着信号被M、L执行。此时如果L任务的运行时间>H的运行时间，也就是说L没有释放信号量，此时H任务会尝试获取信号量，最终失败，接着就是M运行，也就是说，优先级低的任务反而阻塞了高优先级的任务。
+- 解决方案：设计一个带有优先级继承机制的二进制信号量。当检测到H任务因为没有信号量而被L任务阻塞时，会将L的优先级临时提升到和H相同，L结束后直接执行H，将不会导致任务M优先执行。
+- 用途：保护高优先级任务。
+- API函数
+```c
+//创建互斥锁
+SemaphoreHandle_t MutexSemaphore;
+MutexSemaphore = xSemaphoreCreateMutex();
+//加锁
+xSemaphoreTake(xMutex, portMAX_DELAY);  
+//解锁
+xSemaphoreGive(xMutex);                 
+```
