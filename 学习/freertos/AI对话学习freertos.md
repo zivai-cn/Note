@@ -387,6 +387,7 @@ xTaskCreate(vConsumerTask, "Consumer", 128, NULL, 2, NULL);
 | 二值信号量 | `xSemaphoreCreateBinary()`            | 一个"令牌"，只有 0/1 | 任务同步、中断通知任务 |
 | 计数信号量 | `xSemaphoreCreateCounting(max, init)` | 计数器，可累积       | 管理多个同类资源    |
 | 互斥锁   | `xSemaphoreCreateMutex()`             | 带优先级继承的锁      | 保护共享资源（如串口） |
+|       |                                       |               |             |
 
 **2. 核心 API（15 分钟）**
 
