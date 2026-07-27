@@ -202,7 +202,7 @@ void vConsumer(void *pv) {//消费者优先处理紧急消息函数
 	}
 }
 ```
-# 五、信号量与互斥锁
+# 五、信号量
 1. 二进制信号量
 - 问题：如果需要一个事件的状态影响另一个事件的工作，可以直接传递信息也就是使用队列，但是我们只需要告知一个状态即可，设计一个队列未免有点资源浪费。
 - 解决方案：二进制信号量，本质是一个单位的队列，只传递状态0/1。
@@ -218,4 +218,18 @@ xSemaphoreGive(xSemaphore);
 xSemaphoreTake(xBinarySem, portMAX_DELAY);  
 ```
 2. 计数信号量
-- 问题：
+- 问题：存在多个任务竞争使用相同的资源，不能清晰表示剩余资源数量。
+- 解决方案：还是使用一个队列，数据是对整体资源数量的标记值，每次使用、释放都对资源数进行重新记录。
+- 用途：建立一个资源池，方便管理多个资源。
+- API函数
+```C
+//创建计数信号量
+SemaphoreHandle_t xSemaphore
+xSemaphore = xSemaphoreCreateCounting(max, init);//参数：资源最大值，初始被占用值
+//消耗一个资源
+xSemaphoreTake(xSemaphore,xBlockTime);//xSemaphore是等待时间  
+//归还一个资源        
+xSemaphoreGive(xSemaphore);             
+```
+3. 互斥信号量
+- 问题：优先级反转——当多个优先级不同的任务都调用一个资源时，会出现下面的情况，高优先级任务获取信号量之后，就会释放信号量，接着信号被中优先级的执行，被低优先级的执行，
