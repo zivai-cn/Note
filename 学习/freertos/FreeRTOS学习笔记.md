@@ -246,6 +246,19 @@ xSemaphoreTake(xMutex, portMAX_DELAY);
 //解锁
 xSemaphoreGive(xMutex);                 
 ```
+4. FromISR
+from interrupt service routine。
+- 解决问题：中断函数中，不允许被阻塞，必须立刻返回。
+- API函数
+```c
+//二进制信号量
+xSemaphoreTakeFromISR();
+xSemaphoreGiveFromISR();
+//计数信号量
+xSemaphoreTakeFromISR();
+xSemaphoreGiveFromISR();
+//互斥信号量没有FROMISR版本
+```
 4. 应用
 ```c
 
