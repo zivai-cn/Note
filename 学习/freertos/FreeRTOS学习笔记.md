@@ -203,3 +203,19 @@ void vConsumer(void *pv) {//消费者优先处理紧急消息函数
 }
 ```
 # 五、信号量与互斥锁
+1. 二进制信号量
+- 问题：如果需要一个事件的状态影响另一个事件的工作，可以直接传递信息也就是使用队列，但是我们只需要告知一个状态即可，设计一个队列未免有点资源浪费。
+- 解决方案：二进制信号量，本质是一个单位的队列，只传递状态0/1。
+- 用途：可以让A任务告知B任务自己的状态，或者用于中断响应。
+- API函数
+```c
+//创建二进制信号量
+SemaphoreHandle_t xSemaphore;
+xSemaphore = xSemaphoreCreateBinary();
+//释放信号量（将信号量置1）
+xSemaphoreGive(xSemaphore);     
+//获取信号量（将信号量置0）     
+xSemaphoreTake(xBinarySem, portMAX_DELAY);  
+```
+2. 计数信号量
+- 问题：
