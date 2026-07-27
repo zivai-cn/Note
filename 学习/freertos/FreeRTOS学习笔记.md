@@ -237,6 +237,7 @@ xSemaphoreGive(xSemaphore);
 - 用途：保护高优先级任务。
 - API函数
 ```c
+/*锁针对L*/
 //创建互斥锁
 SemaphoreHandle_t MutexSemaphore;
 MutexSemaphore = xSemaphoreCreateMutex();
@@ -244,4 +245,10 @@ MutexSemaphore = xSemaphoreCreateMutex();
 xSemaphoreTake(xMutex, portMAX_DELAY);  
 //解锁
 xSemaphoreGive(xMutex);                 
+```
+4. 应用
+```c
+
+
+
 ```
