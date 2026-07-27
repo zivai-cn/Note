@@ -261,7 +261,39 @@ xSemaphoreGiveFromISR();
 ```
 4. 应用
 ```c
+//按键中断唤醒任务
+SemaphoreHandle_t xButtonSem;
+void EXTI0_IRQHandler(void) {//中断处理函数中要用FromISR版本
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;//默认不切换
+    xSemaphoreGiveFromISR(xButtonSem, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);//如果需要切换就立即切换
+    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+}	
+void vButtonTask(void *pv) {
+    for (;;) { 
+        if (xSemaphoreTake(xButtonSem, portMAX_DELAY) == pdTRUE) {// 等待按键信号量，永远等
+            printf("Button pressed!\r\n");
+            // 处理按键逻辑...
+        }
+    }
+}
 
-
-
+//互斥锁保护串口打印
+SemaphoreHandle_t xUARTMutex;
+void vTask1(void *pv) {
+    for (;;) {
+        xSemaphoreTake(xUARTMutex, portMAX_DELAY);
+        printf("Task1: This is a long message that must not be interrupted\r\n");
+        xSemaphoreGive(xUARTMutex);
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
+void vTask2(void *pv) {
+    for (;;) {
+        xSemaphoreTake(xUARTMutex, portMAX_DELAY);
+        printf("Task2: Another long message here\r\n");
+        xSemaphoreGive(xUARTMutex);
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
 ```
