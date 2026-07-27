@@ -426,7 +426,7 @@ void EXTI0_IRQHandler(void) {
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);  // 如果需要切换就立即切换
     HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
 }
-
+	
 void vButtonTask(void *pv) {
     for (;;) {
         // 等待按键信号量，永远等
