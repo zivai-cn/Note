@@ -590,15 +590,11 @@ void vADCTask(void *pv) {
 2. **中断到任务的数据流：** 用定时器中断模拟高速数据源（如 1kHz），通过队列发给任务处理，观察是否丢数据
 3. **临界区对比实验：** 分别用 `taskENTER_CRITICAL`、`vTaskSuspendAll`、互斥锁保护同一个全局变量，用逻辑分析仪对比中断响应延迟
 4. **模拟优先级违反：** 故意在 NVIC 优先级 0~4 的中断中调用 FreeRTOS API，观察系统行为（可能直接 HardFault）
-
 **资源清单**
-
 - FreeRTOS 官方文档：[Interrupt Management](https://www.freertos.org/a00110.html)
 - 你的 STM32 参考手册中的 NVIC 章节
 - 《Mastering the FreeRTOS Real Time Kernel》第 7 章
-
 **复盘 10 问（20 分钟）**
-
 1. 为什么 STM32 上 `configMAX_SYSCALL_INTERRUPT_PRIORITY` 要左移 4 位？
 2. 中断中调用了非 `FromISR` 版本的 API 会有什么后果？
 3. `taskENTER_CRITICAL` 和 `__disable_irq()` 有什么区别？
