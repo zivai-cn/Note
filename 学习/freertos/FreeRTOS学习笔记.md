@@ -342,6 +342,7 @@ xEventGroupSetBits( xEventGroup, uxBitsToSet );
 xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken ); 
 //等待事件标志位
 xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit,  xWaitForAllBits, xTicksToWait );//uxBitsToWaitFor等待的标志位可以用逻辑或等待多个事件；xClearOnExit成功后是否清除标志位；xWaitForAllBits等待的标志位事件，T为标志位全部为1，F为某一位为1
-//同步函数：自身置位 + 等待其他标志位
-xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait );
+//同步函数
+//这个函数需要在所有需要同步的函数中写，只有全部成立才会执行任务后续的代码
+xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait );//uxBitsToSet本任务的事件位，uxBitsToWaitFor需要等待的组合。
 ```
