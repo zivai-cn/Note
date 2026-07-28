@@ -325,7 +325,7 @@ xQueueSelectFromSetFromISR(xQueueSet);//指定队列集
 - 中断和时间都可以接受事件组的广播。
 - 任务可以选择是否改变某一位的状态。
 - 可以同时对多位进行判断。
-1. API函数
+2. API函数
 ```c
 //动态创建事件标志组 
 EventGroupHandle_t xEventGroupCreate();
@@ -346,3 +346,4 @@ xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit,  xWaitForAllBit
 //这个函数需要在所有需要同步的函数中写，只有全部成立才会执行任务后续的代码
 xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait );//uxBitsToSet本任务的事件位，uxBitsToWaitFor需要等待的组合。
 ```
+# 八、中断管理与临界区
