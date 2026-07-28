@@ -347,3 +347,23 @@ xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit,  xWaitForAllBit
 xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait );//uxBitsToSet本任务的事件位，uxBitsToWaitFor需要等待的组合。
 ```
 # 八、中断管理与临界区
+1. NVIC中断优先级
+- NVIC中断优先级0-15（数字越小，优先级越高），其中只有优先级>=5才可以调用freertos的API函数（FromISR）
+2. 临界区保护
+```c
+//方式1：关中断（最重，但最安全）
+//使用条件：操作比较短，和中断有共享的数据
+taskENTER_CRITICAL();
+/*临界区代码*/
+taskEXIT_CRITICAL();
+
+//方式2：挂起调度器（中断仍可响应，但任务不切换）
+//使用条件:中断仍需要响应，仅任务间共享
+vTaskSuspendAll();
+/*临界区代码*/
+xTaskResumeAll();
+
+//方式3：互斥锁
+//使用条件：保护的程序时间比较长，不会影响中断和调度
+
+```
