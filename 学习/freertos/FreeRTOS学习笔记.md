@@ -307,6 +307,7 @@ void vTask2(void *pv) {
 QueueSetHandle_t queueset_handle;
 xQueueCreateSet();
 //添加队列到队列集
+//注意：添加队列时，队列必须是空的
 xQueueAddSet();
 //删除队列集中队列
 xQueueRemoveFromSet();
