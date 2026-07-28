@@ -330,17 +330,18 @@ xQueueSelectFromSetFromISR(xQueueSet);//指定队列集
 //动态创建事件标志组 
 EventGroupHandle_t xEventGroupCreate();
 //静态创建事件标志组
-EventGroupHandle_t xEventGroupCreateStatic( pxEventGroupBuffer ); 
+xEventGroupCreateStatic( pxEventGroupBuffer ); 
 //清除事件标志位（任务中调用）
-EventBits_t xEventGroupClearBits( xEventGroup, uxBitsToClear ); 
+xEventGroupClearBits( xEventGroup, uxBitsToClear ); 
 //清除事件标志位（中断中调用） 
-BaseType_t xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear, pxHigherPriorityTaskWoken ); 
-/* 设置事件标志位（任务中调用） */ 
-EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup, const EventBits_t uxBitsToSet ); 
-/* 设置事件标志位（中断中调用） */ 
-BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup, const EventBits_t uxBitsToSet, BaseType_t *pxHigherPriorityTaskWoken ); 
-/* 等待事件标志位 */
- EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup, const EventBits_t uxBitsToWaitFor, const BaseType_t xClearOnExit, const BaseType_t xWaitForAllBits, TickType_t xTicksToWait ); 
- /* 同步函数：自身置位 + 等待其他标志位 */ 
- EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup, const EventBits_t uxBitsToSet, const EventBits_t uxBitsToWaitFor, TickType_t xTicksToWait );
+xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear,
+pxHigherPriorityTaskWoken ); 
+//设置事件标志位（任务中调用） 
+xEventGroupSetBits( xEventGroup, uxBitsToSet ); 
+//设置事件标志位（中断中调用） 
+xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken ); 
+//等待事件标志位
+xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit,  xWaitForAllBits, xTicksToWait );//uxBitsToWaitFor等待的标志位可以用逻辑或等待多个事件；xClearOnExit成功后是否清除标志位；xWaitForAllBits等待的标志位事件，T为标志位全部为1，F为某一位为1
+//同步函数：自身置位 + 等待其他标志位
+ EventBits_t xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait );
 ```
