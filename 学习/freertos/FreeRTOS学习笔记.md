@@ -305,14 +305,27 @@ void vTask2(void *pv) {
 ```c
 //创建队列集
 QueueSetHandle_t queueset_handle;
-queueset_handle = xQueueCreateSet(const UBaseType_t uxEventQueueLength);//
+queueset_handle = xQueueCreateSet(uxEventQueueLength);//队列集最大同时排队的队列数量
 //添加队列到队列集
 //注意：添加队列时，队列必须是空的
-xQueueAddSet();
+xQueueAddSet(xQueueOrSemaphore,xQueueSet);//需要添加的队列，添加进入的队列集
 //删除队列集中队列
-xQueueRemoveFromSet();
+xQueueRemoveFromSet(xQueueOrSemaphore,xQueueSet);//需要添加的队列，添加进入的队列集
 //获取队列集中获取消息的队列
-xQueueSelectFromSet();
+xQueueSelectFromSet(xQueueSet,xTicksToWait);//指定队列集，等待时间
 //中断中获取队列集中获取消息的队列
-xQueueSelectFromSetFromISR();
+xQueueSelectFromSetFromISR(xQueueSet);//指定队列集
+```
+# 七、事件组
+- 问题：多个任务都需要通过其他任务传递消息来判断是否执行任务，这将造成任务优先级以及事件判断非常麻烦。
+- 解决方案：参考在裸机中的标志位，不过是指定一个数据，用不同bit分别表示一个任务的标志位，这个数据叫做时间组。事件组具备广播性质，各个任务只需要听广播判断自己bit位的状态即可。
+- 用途：管理多个需要状态判断的任务。
+1. 事件组的性质
+- 高8位不能表示时间。默认下，事件组的位数是32位，也就是最多管理24个数据。
+- 中断和时间都可以接受事件组的广播。
+- 任务可以选择是否改变某一位的状态。
+- 可以同时对多位进行判断。
+1. API函数
+```c
+
 ```
