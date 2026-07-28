@@ -347,9 +347,9 @@ xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit,  xWaitForAllBit
 xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait );//uxBitsToSet本任务的事件位，uxBitsToWaitFor需要等待的组合。
 ```
 # 八、中断管理与临界区
-1. NVIC中断优先级
-- NVIC中断优先级0-15（数字越小，优先级越高），其中只有优先级>=5才可以调用freertos的API函数（FromISR）
-2. 临界区保护
+1. 临界区保护
+- 问题：多个任务操作一个数据时，随着时间片的流转，数据处理会被混合执行，最终产生错误数据。
+- 解决方案：对被多任务操作的数据上锁保护，期间时间片不会流转到其他任务。这段被上锁的代码就是处于临界区。
 ```c
 //方式1：关中断（最重，但最安全）
 //使用条件：操作比较短，和中断有共享的数据
@@ -367,3 +367,6 @@ xTaskResumeAll();
 //使用条件：保护的程序时间比较长，不会影响中断和调度
 
 ```
+2. NVIC中断优先级
+- NVIC中断优先级0-15（数字越小，优先级越高），其中只有优先级>=5才可以调用freertos的API函数（FromISR）
+- 临界区的数据并非完全不可以被打断，NVIC优先级<5的任务照样可以打断。
