@@ -305,7 +305,7 @@ void vTask2(void *pv) {
 ```c
 //创建队列集
 QueueSetHandle_t queueset_handle;
-xQueueCreateSet();
+queueset_handle = xQueueCreateSet(const UBaseType_t uxEventQueueLength);//
 //添加队列到队列集
 //注意：添加队列时，队列必须是空的
 xQueueAddSet();
