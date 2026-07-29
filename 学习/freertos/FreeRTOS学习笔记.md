@@ -1,4 +1,4 @@
-学习笔记来自00kino，学习老师包括：伟东山 bilibili，keysking bilibili。
+学习笔记来自00kino，学习老师包括：伟东山 bilibili，keysking bilibili，正点原子 bilibili。
 **学前知识：**
 - 由于FreeRtos工程的自身特性，在freertos的学习过程中，你会看到两套API函数，一个来自Freertos，一个来自CMSIS，这里00kino认为，FreeRtos的操作更加底层，因此笔记中使用的都是FreeRtos的原生API，但是CUBEMX生成的代码默认使用的都是CMSIS的API，需要注意。
 - 在FreeRtos中，很多函数是宏定义的类函数，这意味着如果配置不正确，你可能无法跳转到相关定义，此时你可以直接查找 `#define 函数`
