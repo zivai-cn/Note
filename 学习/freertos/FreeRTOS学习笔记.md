@@ -397,9 +397,12 @@ xTimerCreate(pcTimerName,xTimerPeriodInTicks,uxAutoReload,pvTimerID, pxCallbackF
 xTimerStart(xTimer,xTicksToWait)//软件定时器句柄,最大等待时间
 
 //停止软件定时器
-xTimerStop(xTImer,xTicksToWait)//软件定时器句柄,最大等待时间
+xTimerStop(xTimer,xTicksToWait)//软件定时器句柄,最大等待时间
 
 //复位软件定时器
-xTimerReset(xTImer,xTicksToWait);//软件定时器句柄,最大等待时间
+xTimerReset(xTimer,xTicksToWait);//软件定时器句柄,最大等待时间
 //复位之后的软件定时器会从本时刻重新还是计时
+
+//更改软件定时器超时时间
+xTimerChangePeriod(xTimer,xNewPeriod,xTicksToWait);//软件定时器句柄,新的超时时间,最大等待时间
 ```
