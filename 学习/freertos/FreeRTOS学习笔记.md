@@ -375,4 +375,31 @@ xTaskResumeAll();
 - freertos中使用软件定时器：需要`configUSE_TIMERS = 1;`
 - 软件定时器回调函数不允许阻塞。
 - 软件定时器服务任务：调用函数 vTaskStartScheduler()开启任务调度器的时候，除了创建一个空闲任务，还会创建一个用于管理软件定时器的任务，这个任务就叫做软件定时器服务任务。一个工程中只有一个软件定时器服务任务，这个任务负责管理所有软件定时器相关事宜。
-- 
+API函数
+```c
+//定时器结构体
+typedef struct { 
+const char * pcTimerName; /* 软件定时器名字 */ 
+ListItem_t xTimerListItem; /* 软件定时器列表项 */ 
+TickType_t xTimerPeriodInTicks; /* 软件定时器的周期 */ 
+void * pvTimerID; /* 软件定时器的ID */ 
+TimerCallbackFunction_t pxCallbackFunction; /* 软件定时器的回调函数 */ 
+#if ( configUSE_TRACE_FACILITY == 1 ) 
+UBaseType_t uxTimerNumber; /* 软件定时器的编号，调试用 */ 
+#endif 
+uint8_t ucStatus; /* 软件定时器的状态 */ 
+} xTIMER;
+
+//创建软件定时器
+xTimerCreate(pcTimerName,xTimerPeriodInTicks,uxAutoReload,pvTimerID, pxCallbackFunction);//软件定时器名称,定时周期,是否自动重载：pdTRUE周期定时器、pdFALSE单次定时器,定时器ID,定时器超时触发的回调函数
+
+//开启软件定时器
+xTimerStart(xTimer,xTicksToWait)//软件定时器句柄,最大等待时间
+
+//停止软件定时器
+xTimerStop(xTImer,xTicksToWait)//软件定时器句柄,最大等待时间
+
+//复位软件定时器
+xTimerReset(xTImer,xTicksToWait);//软件定时器句柄,最大等待时间
+//复位之后的软件定时器会从本时刻重新还是计时
+```
