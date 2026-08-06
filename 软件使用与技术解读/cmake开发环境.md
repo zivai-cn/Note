@@ -541,4 +541,38 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--no-warn-rwx-segments,--print-mem
 4. 全部移植完成，请保存文件。
 # 五、stm32标准库的移植。
 标准库的移植就比较简单了。可以直接参考示例工程中的文件，修改芯片、内核相关文件，以及对CMakeList文件、.json文件中的相关内容进行修改即可。
-六、在vscode中快速开发stm32的使用方案。
+# 六、在vscode中快速开发stm32的使用方案
+流程如下
+[爽！手把手教你用VSCode开发STM32【大人，时代变啦！！！】_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1QfbpzGENy/?spm_id_from=333.337.search-card.all.click&vd_source=f463c94bb693bc70ae0b1979f04aa8aa)
+
+需要注意的是，vscode的st官方库中只有stlink的驱动文件，因此如果你使用的是非stlink进行烧录调试，需要添加一些额外的配置。
+1. 添加Cortex Debug插件
+arm内核的烧录调试工具。
+2. 添加新的launch.json。以daplink为例。
+```c
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/Debug/teeee.elf",//项目名称 
+            "name": "Debug STM32 with DAPLink",
+            "request": "launch",
+            "type": "cortex-debug",  
+            "servertype": "openocd",
+            "configFiles": [
+                "interface/cmsis-dap.cfg",
+                "target/stm32f1x.cfg"//芯片型号
+            ],  
+            "openOCDLaunchCommands": [
+                "transport select swd"
+            ],  
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "none",
+            "gdbPath": "arm-none-eabi-gdb.exe",
+            "serverpath": "openocd.exe"
+        }
+    ]
+}
+```
+3. 由于stm32官方插件库并没有提供烧录功能，只能通过：调试——继续运行，完成操作，明显麻烦。个人建议添加一个烧录按钮。使用在
