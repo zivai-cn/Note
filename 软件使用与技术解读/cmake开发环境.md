@@ -576,6 +576,29 @@ arm内核的烧录调试工具。
 }
 ```
 3. 由于stm32官方插件库并没有提供烧录功能，只能通过：调试——继续运行，完成操作，明显麻烦。个人建议添加一个烧录按钮。可以使用task buttons。
-```C
-
+```c
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "DAPLink Flash",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "interface/cmsis-dap.cfg",
+                "-f",
+                "target/stm32f1x.cfg",//芯片型号
+                "-c",
+                "transport select swd",
+                "-c",
+                "program ./build/Debug/teeee.elf verify reset exit"//项目名称
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
 ```
