@@ -7,4 +7,7 @@ init{//项目的启动入口
 config{//全局设置，包括freertos内核参数
 	
 }
+hal{//(hardware abstract layer)硬件抽象层
+
+}
 ```
