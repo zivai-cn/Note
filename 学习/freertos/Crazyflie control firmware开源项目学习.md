@@ -17,5 +17,25 @@ hal{//(hardware abstract layer)硬件抽象层
 	usblink.c //USB 通信任务
 	sensors_*.c //传感器数据采集任务
 }
+modules{//模块功能
+//完整功能的最小单位
+	system.c //系统任务 - 初始化所有模块并启动
+	stabilizer.c //【关键】飞控稳定器任务 - 1kHz 主控制循环
+	crtp.c //通信协议栈 (TX/RX 任务)
+	log.c //日志系统任务
+	param_task.c //参数系统任务
+	commander.c //指令处理
+	estimator/ //状态估计 (卡尔曼滤波器任务)
+	controller/ //控制器 (PID/Mellinger/INDI 等)
+}
+deck{//扩展板驱动 (每个驱动可能创建任务)
 
+}
+drivers{//底层驱动
+//传感器读取，电机控制，iic，spi等通信协议
+	
+}
+utils{//工具函数
+
+}
 ```
