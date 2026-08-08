@@ -66,6 +66,12 @@ canStartMutexBuffer是系统启动互斥锁的静态内存缓冲区。systeminit
 通信基础设施：`usblinkInit()` → `cpxlinkInit()` → `debugInit()` → `crtpInit()` → `consoleInit()` → `crtpSupervisorInit()`。打印版本信息：发布版本号、Git 提交哈希、MCU 唯一 ID、Flash 大小。底层服务：`configblockInit()` → `storageInit()` → `workerInit()` → `adcInit()`。外设功能：`ledseqInit()` → `pmInit()` → `buzzerInit()` → `peerLocalizationInit()`
 3. 自检
 对各自模块运行情况进行debug打印，并执行相关的警告。
+4. 通知其他任务进行
+5. 永久阻塞任务
+```c
+while(1)
+    vTaskDelay(portMAX_DELAY);
+```
 
 # 三、附属小知识
 ### C 预处理器 ## 符号说明
