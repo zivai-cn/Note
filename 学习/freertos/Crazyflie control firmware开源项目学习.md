@@ -61,7 +61,7 @@ platform{
 - canStartMutexBuffer  
 canStartMutex = xSemaphoreCreateMutexStatic(&canStartMutexBuffer);
 xSemaphoreTake(canStartMutex, portMAX_DELAY);
-canStartMutexBuffer是系统启动互斥锁的静态内存缓冲区。这一步对
+canStartMutexBuffer是系统启动互斥锁的静态内存缓冲区。systeminit函数跑在systemtask中，这一步对这一任务上锁。
 
 # 三、附属小知识
 ### C 预处理器 ## 符号说明
