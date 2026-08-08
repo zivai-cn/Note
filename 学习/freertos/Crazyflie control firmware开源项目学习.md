@@ -56,10 +56,13 @@ platform{
 1. 系统启动函数`void systemLaunch(void)`
 调用函数是freertos静态分配内存的重定义函数。
 2. 第一次初始化`systemInit(void)`
-```c
-if(isInit) return;//状态机flag，判断是否进行了初始化。
+- if(isInit) return;
+状态机flag，判断是否进行了初始化。
+- canStartMutexBuffer  
+canStartMutex = xSemaphoreCreateMutexStatic(&canStartMutexBuffer);
+xSemaphoreTake(canStartMutex, portMAX_DELAY);
+canStartMutexBuffe是系统启动互斥锁的静态内存缓冲区
 
-```
 # 三、附属小知识
 ### C 预处理器 ## 符号说明
 `##` 是 C 预处理**令牌拼接运算符**：把前后两段标识符拼接成一个完整变量名。
