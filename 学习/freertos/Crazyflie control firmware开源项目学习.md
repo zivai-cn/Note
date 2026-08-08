@@ -62,6 +62,7 @@ platform{
 canStartMutex = xSemaphoreCreateMutexStatic(&canStartMutexBuffer);
 xSemaphoreTake(canStartMutex, portMAX_DELAY);
 canStartMutexBuffer是系统启动互斥锁的静态内存缓冲区。systeminit函数跑在systemtask中，这一步对这一任务上锁。在完成初始化之前，任何相关任务都不得运行。
+之后再SystemStart中释放。
 - **初始化任务**
 通信基础设施：`usblinkInit()` → `cpxlinkInit()` → `debugInit()` → `crtpInit()` → `consoleInit()` → `crtpSupervisorInit()`。打印版本信息：发布版本号、Git 提交哈希、MCU 唯一 ID、Flash 大小。底层服务：`configblockInit()` → `storageInit()` → `workerInit()` → `adcInit()`。外设功能：`ledseqInit()` → `pmInit()` → `buzzerInit()` → `peerLocalizationInit()`
 3. 自检
