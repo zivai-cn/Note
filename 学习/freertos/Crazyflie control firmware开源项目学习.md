@@ -56,12 +56,16 @@ platform{
 1. 系统启动函数`void systemLaunch(void)`
 调用函数是freertos静态分配内存的重定义函数。
 2. 第一次初始化`systemInit(void)`
-- if(isInit) return;
+- **if(isInit) return;**
 状态机flag，判断是否进行了初始化。
-- canStartMutexBuffer  
+- **canStartMutexBuffer**  
 canStartMutex = xSemaphoreCreateMutexStatic(&canStartMutexBuffer);
 xSemaphoreTake(canStartMutex, portMAX_DELAY);
 canStartMutexBuffer是系统启动互斥锁的静态内存缓冲区。systeminit函数跑在systemtask中，这一步对这一任务上锁。在完成初始化之前，任何相关任务都不得运行。
+- **初始化任务**
+通信基础设施：`usblinkInit()` → `cpxlinkInit()` → `debugInit()` → `crtpInit()` → `consoleInit()` → `crtpSupervisorInit()`。打印版本信息：发布版本号、Git 提交哈希、MCU 唯一 ID、Flash 大小。底层服务：`configblockInit()` → `storageInit()` → `workerInit()` → `adcInit()`。外设功能：`ledseqInit()` → `pmInit()` → `buzzerInit()` → `peerLocalizationInit()`
+3. 开机自检bool systemTest()
+
 
 # 三、附属小知识
 ### C 预处理器 ## 符号说明
