@@ -51,5 +51,19 @@ platform{
 }
 ```
 # 二、程序运行流程分析
-## 1. system.c
+## （一） system.c
 代码负责整个系统的初始化、自检、启动流程。协调所有子模块的初始化顺序。
+1. 系统启动函数
+调用函数是freertos静态分配内存的重定义函数。
+```c
+void systemLaunch(void)
+{
+  STATIC_MEM_TASK_CREATE(systemTask, systemTask, SYSTEM_TASK_NAME, NULL, SYSTEM_TASK_PRI);
+}
+```
+# 三、附属小知识
+### C 预处理器 ## 符号说明
+`##` 是 C 预处理**令牌拼接运算符**：把前后两段标识符拼接成一个完整变量名。
+举例：当传入`NAME = systemTask`
+- `osSys_ ## NAME ## StackDepth` → `osSys_systemTaskStackDepth`
+用途：对函数进行重封装，重定义传入参数名称。
