@@ -61,7 +61,7 @@ platform{
 - canStartMutexBuffer  
 canStartMutex = xSemaphoreCreateMutexStatic(&canStartMutexBuffer);
 xSemaphoreTake(canStartMutex, portMAX_DELAY);
-canStartMutexBuffe是系统启动互斥锁的静态内存缓冲区
+canStartMutexBuffer是系统启动互斥锁的静态内存缓冲区。这一步对
 
 # 三、附属小知识
 ### C 预处理器 ## 符号说明
@@ -69,3 +69,8 @@ canStartMutexBuffe是系统启动互斥锁的静态内存缓冲区
 举例：当传入`NAME = systemTask`
 - `osSys_ ## NAME ## StackDepth` → `osSys_systemTaskStackDepth`
 用途：对函数进行重封装，重定义传入参数名称。
+### 为什么统一全部采取静态内存分配
+- 避免堆内存耗尽。如果数据区划分不合理，将堆内存耗尽，malloc动态创建会直接返回null，创建将直接崩溃。
+- 防止内存碎片化。程序运行时间一旦长，反复操作信号量、任务，会产生内存空间碎片，影响内存的空间大小。
+- 时间确定性。malloc动态创建内存的执行时间不确定。静态创建规定内存位置大小，不会因分配产生耗时。
+- 
