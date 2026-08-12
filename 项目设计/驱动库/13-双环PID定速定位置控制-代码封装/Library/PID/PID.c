@@ -15,6 +15,29 @@
 
 #include "PID.h"
 
+/* 选择积分抗饱和（anti-windup）方案：
+	- AW_NONE:        不使用积分（Ki 被视为 0）
+	- AW_CLAMP:       经典积分限幅（限制 ErrorInt 使 Ki*ErrorInt 不超出输出范围）
+	- AW_CONDITIONAL: 条件积分（当输出被饱和且本次积分朝饱和方向累积时，撤销本次积分）
+	- AW_BACK_CALC:   反向校正（back-calculation），需要调整 AW_GAIN
+
+	使用方法：编辑此文件把下面的 AW_METHOD 宏改为需要的方案，或在编译器命令中定义。
+*/
+#define AW_NONE        0
+#define AW_CLAMP       1
+#define AW_CONDITIONAL 2
+#define AW_BACK_CALC   3
+
+/* 默认使用条件积分（稳妥的 anti-windup） */
+#ifndef AW_METHOD
+#define AW_METHOD AW_CONDITIONAL
+#endif
+
+/* 仅在 AW_BACK_CALC 时有效：离散反向校正增益（越大收敛越快，但可能引入振荡） */
+#ifndef AW_GAIN
+#define AW_GAIN 0.05f
+#endif
+
 /**
   * 函    数：PID 初始化
   * 参    数：PID_t * 指定结构体的地址
@@ -94,44 +117,40 @@ void PID_Update(PID_t *p)
 	/*如果Ki不为0，才进行误差积分，这样做的目的是便于调试*/
 	/*因为在调试时，我们可能先把Ki设置为0，这时积分项无作用，误差消除不了，误差积分会积累到很大的值*/
 	/*后续一旦Ki不为0，那么因为误差积分已经积累到很大的值了，这就导致积分项疯狂输出，不利于调试*/
-	if (p->Ki != 0)							//如果Ki不为0
-	{
-		p->ErrorInt += p->Error0;			//进行误差积分
+	/* 积分与抗饱和策略统一在下面通过 AW_METHOD 选择实现 */
+	
+	/* 导数项（差分） */
+	PID_F dTerm = p->Kd * (p->Error0 - p->Error1);
 
-		/*积分限幅，防止积分饱和（积分项 Ki*ErrorInt 不超出输出范围）*/
-		if (p->Ki > 0)						//如果Ki为正，按正常方向限幅
-		{
-			if (p->ErrorInt >  p->OutMax / p->Ki)	p->ErrorInt = p->OutMax / p->Ki;
-			if (p->ErrorInt <  p->OutMin / p->Ki)	p->ErrorInt = p->OutMin / p->Ki;
-		}
-		else								//否则，即Ki为负，限幅方向取反
-		{
-			if (p->ErrorInt >  p->OutMin / p->Ki)	p->ErrorInt = p->OutMin / p->Ki;
-			if (p->ErrorInt <  p->OutMax / p->Ki)	p->ErrorInt = p->OutMax / p->Ki;
-		}
-	}
-	else									//否则
-	{
-		p->ErrorInt = 0;					//误差积分直接归0
-	}
+#if (AW_METHOD == AW_NONE)
+	/* 不使用积分 */
+	p->ErrorInt = 0;
+	p->Out = p->Kp * p->Error0 + p->Ki * p->ErrorInt + dTerm;
 
-	/*PID计算*/
-	/*使用位置式PID公式，计算得到输出值*/
-	p->Out = p->Kp * p->Error0
-	/* 积分更新与抗积分饱和（anti-windup）策略
-	   - 首先计算积分候选值并对积分项进行限幅（防止积分项本身超过输出范围）
-	   - 然后计算输出并对输出限幅；若输出被限幅且最近一次积分使情况更糟（朝饱和方向积累），
-		 撤销最近一次积分（条件积分），避免积分继续推动输出饱和。这是一种简单且有效的 anti-windup 策略。
-	*/
-	if (p->Ki != 0)
+#elif (AW_METHOD == AW_CLAMP)
+	/* 经典积分限幅：先积分再对 ErrorInt 进行限幅，保证 Ki*ErrorInt 不超出输出范围 */
+	p->ErrorInt += p->Error0;
+	if (p->Ki > 0)
 	{
-		/* 保存上一次积分值，用于在需要时撤销 */
+		if (p->ErrorInt >  p->OutMax / p->Ki)    p->ErrorInt = p->OutMax / p->Ki;
+		if (p->ErrorInt <  p->OutMin / p->Ki)    p->ErrorInt = p->OutMin / p->Ki;
+	}
+	else
+	{
+		if (p->ErrorInt >  p->OutMin / p->Ki)    p->ErrorInt = p->OutMin / p->Ki;
+		if (p->ErrorInt <  p->OutMax / p->Ki)    p->ErrorInt = p->OutMax / p->Ki;
+	}
+	p->Out = p->Kp * p->Error0 + p->Ki * p->ErrorInt + dTerm;
+	if (p->Out > p->OutMax)    {p->Out = p->OutMax;}
+	if (p->Out < p->OutMin)    {p->Out = p->OutMin;}
+
+#elif (AW_METHOD == AW_CONDITIONAL)
+	/* 条件积分：当输出因为积分而导致朝饱和方向累积时，撤销最近一次积分 */
+	{
 		PID_F prevErrorInt = p->ErrorInt;
-
-		/* 计算积分候选值（未限幅） */
 		PID_F candErrorInt = p->ErrorInt + p->Error0;
 
-		/* 对积分项进行限幅，使 Ki*candErrorInt 不超出输出范围 */
+		/* 对积分候选做与限幅相容的裁剪，避免积分项太大 */
 		if (p->Ki > 0)
 		{
 			if (candErrorInt >  p->OutMax / p->Ki)    candErrorInt = p->OutMax / p->Ki;
@@ -143,49 +162,62 @@ void PID_Update(PID_t *p)
 			if (candErrorInt <  p->OutMax / p->Ki)    candErrorInt = p->OutMax / p->Ki;
 		}
 
-		p->ErrorInt = candErrorInt; /* 先暂时接受候选积分值 */
+		p->ErrorInt = candErrorInt;
+		p->Out = p->Kp * p->Error0 + p->Ki * p->ErrorInt + dTerm;
 
-		/* 计算 PID 输出（位置式），随后根据输出限幅判断是否需要撤销积分 */
-		p->Out = p->Kp * p->Error0
-			   + p->Ki * p->ErrorInt
-			   + p->Kd * (p->Error0 - p->Error1);
-
-		/* 如果输出超过限幅并且最近一次积分朝着饱和方向累积，则撤销该次积分 */
 		if (p->Out > p->OutMax)
 		{
-			/* 若积分项的本次变化方向会使输出朝上溢出（p->Error0*p->Ki>0），撤销 */
 			if ((p->Error0 * p->Ki) > 0)
 			{
-				p->ErrorInt = prevErrorInt; /* 撤销最近一次积分 */
-				/* 重新计算输出（使用撤销后的积分值） */
-				p->Out = p->Kp * p->Error0
-					   + p->Ki * p->ErrorInt
-					   + p->Kd * (p->Error0 - p->Error1);
+				p->ErrorInt = prevErrorInt; /* 撤销积分 */
+				p->Out = p->Kp * p->Error0 + p->Ki * p->ErrorInt + dTerm;
 			}
 			p->Out = p->OutMax;
 		}
 		else if (p->Out < p->OutMin)
 		{
-			/* 若积分项的本次变化方向会使输出朝下溢出（p->Error0*p->Ki<0），撤销 */
 			if ((p->Error0 * p->Ki) < 0)
 			{
-				p->ErrorInt = prevErrorInt; /* 撤销最近一次积分 */
-				/* 重新计算输出（使用撤销后的积分值） */
-				p->Out = p->Kp * p->Error0
-					   + p->Ki * p->ErrorInt
-					   + p->Kd * (p->Error0 - p->Error1);
+				p->ErrorInt = prevErrorInt; /* 撤销积分 */
+				p->Out = p->Kp * p->Error0 + p->Ki * p->ErrorInt + dTerm;
 			}
 			p->Out = p->OutMin;
 		}
 	}
-	else
-	{
-		/* Ki == 0 时不进行积分 */
-		p->ErrorInt = 0;
-		p->Out = p->Kp * p->Error0
-			   + p->Ki * p->ErrorInt
-			   + p->Kd * (p->Error0 - p->Error1);
 
+#elif (AW_METHOD == AW_BACK_CALC)
+	/* 反向校正（back-calculation）离散实现：
+	   - 先计算积分候选与无饱和输出，然后用饱和误差修正积分：
+		 ErrorInt += Error0 + AW_GAIN * (u_sat - u_unsat)
+	   - AW_GAIN 需根据采样周期与回缴时间常数调整，默认为文件顶部的 AW_GAIN。
+	*/
+	{
+		PID_F candErrorInt = p->ErrorInt + p->Error0;
+		PID_F u_unsat = p->Kp * p->Error0 + p->Ki * candErrorInt + dTerm;
+		PID_F u_sat = u_unsat;
+		if (u_sat > p->OutMax) u_sat = p->OutMax;
+		if (u_sat < p->OutMin) u_sat = p->OutMin;
+
+		/* 用饱和误差校正积分（离散近似） */
+		p->ErrorInt = p->ErrorInt + p->Error0 + AW_GAIN * (u_sat - u_unsat);
+
+		/* 为安全起见，对积分再做限幅（避免极端值） */
+		if (p->Ki > 0)
+		{
+			if (p->ErrorInt >  p->OutMax / p->Ki)    p->ErrorInt = p->OutMax / p->Ki;
+			if (p->ErrorInt <  p->OutMin / p->Ki)    p->ErrorInt = p->OutMin / p->Ki;
+		}
+		else if (p->Ki < 0)
+		{
+			if (p->ErrorInt >  p->OutMin / p->Ki)    p->ErrorInt = p->OutMin / p->Ki;
+			if (p->ErrorInt <  p->OutMax / p->Ki)    p->ErrorInt = p->OutMax / p->Ki;
+		}
+
+		p->Out = p->Kp * p->Error0 + p->Ki * p->ErrorInt + dTerm;
 		if (p->Out > p->OutMax)    {p->Out = p->OutMax;}
 		if (p->Out < p->OutMin)    {p->Out = p->OutMin;}
 	}
+
+#else
+#error "Unknown AW_METHOD"
+#endif
