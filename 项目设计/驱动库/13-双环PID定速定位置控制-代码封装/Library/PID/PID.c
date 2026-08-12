@@ -118,10 +118,74 @@ void PID_Update(PID_t *p)
 	/*PID计算*/
 	/*使用位置式PID公式，计算得到输出值*/
 	p->Out = p->Kp * p->Error0
-		   + p->Ki * p->ErrorInt
-		   + p->Kd * (p->Error0 - p->Error1);
+	/* 积分更新与抗积分饱和（anti-windup）策略
+	   - 首先计算积分候选值并对积分项进行限幅（防止积分项本身超过输出范围）
+	   - 然后计算输出并对输出限幅；若输出被限幅且最近一次积分使情况更糟（朝饱和方向积累），
+		 撤销最近一次积分（条件积分），避免积分继续推动输出饱和。这是一种简单且有效的 anti-windup 策略。
+	*/
+	if (p->Ki != 0)
+	{
+		/* 保存上一次积分值，用于在需要时撤销 */
+		PID_F prevErrorInt = p->ErrorInt;
 
-	/*输出限幅*/
-	if (p->Out > p->OutMax)	{p->Out = p->OutMax;}	//限制输出值最大为结构体指定的OutMax
-	if (p->Out < p->OutMin)	{p->Out = p->OutMin;}	//限制输出值最小为结构体指定的OutMin
-}
+		/* 计算积分候选值（未限幅） */
+		PID_F candErrorInt = p->ErrorInt + p->Error0;
+
+		/* 对积分项进行限幅，使 Ki*candErrorInt 不超出输出范围 */
+		if (p->Ki > 0)
+		{
+			if (candErrorInt >  p->OutMax / p->Ki)    candErrorInt = p->OutMax / p->Ki;
+			if (candErrorInt <  p->OutMin / p->Ki)    candErrorInt = p->OutMin / p->Ki;
+		}
+		else
+		{
+			if (candErrorInt >  p->OutMin / p->Ki)    candErrorInt = p->OutMin / p->Ki;
+			if (candErrorInt <  p->OutMax / p->Ki)    candErrorInt = p->OutMax / p->Ki;
+		}
+
+		p->ErrorInt = candErrorInt; /* 先暂时接受候选积分值 */
+
+		/* 计算 PID 输出（位置式），随后根据输出限幅判断是否需要撤销积分 */
+		p->Out = p->Kp * p->Error0
+			   + p->Ki * p->ErrorInt
+			   + p->Kd * (p->Error0 - p->Error1);
+
+		/* 如果输出超过限幅并且最近一次积分朝着饱和方向累积，则撤销该次积分 */
+		if (p->Out > p->OutMax)
+		{
+			/* 若积分项的本次变化方向会使输出朝上溢出（p->Error0*p->Ki>0），撤销 */
+			if ((p->Error0 * p->Ki) > 0)
+			{
+				p->ErrorInt = prevErrorInt; /* 撤销最近一次积分 */
+				/* 重新计算输出（使用撤销后的积分值） */
+				p->Out = p->Kp * p->Error0
+					   + p->Ki * p->ErrorInt
+					   + p->Kd * (p->Error0 - p->Error1);
+			}
+			p->Out = p->OutMax;
+		}
+		else if (p->Out < p->OutMin)
+		{
+			/* 若积分项的本次变化方向会使输出朝下溢出（p->Error0*p->Ki<0），撤销 */
+			if ((p->Error0 * p->Ki) < 0)
+			{
+				p->ErrorInt = prevErrorInt; /* 撤销最近一次积分 */
+				/* 重新计算输出（使用撤销后的积分值） */
+				p->Out = p->Kp * p->Error0
+					   + p->Ki * p->ErrorInt
+					   + p->Kd * (p->Error0 - p->Error1);
+			}
+			p->Out = p->OutMin;
+		}
+	}
+	else
+	{
+		/* Ki == 0 时不进行积分 */
+		p->ErrorInt = 0;
+		p->Out = p->Kp * p->Error0
+			   + p->Ki * p->ErrorInt
+			   + p->Kd * (p->Error0 - p->Error1);
+
+		if (p->Out > p->OutMax)    {p->Out = p->OutMax;}
+		if (p->Out < p->OutMin)    {p->Out = p->OutMin;}
+	}
