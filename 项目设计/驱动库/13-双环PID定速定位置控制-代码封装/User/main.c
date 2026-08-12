@@ -10,6 +10,14 @@
 #include "Serial.h"
 #include "PID.h"
 
+/* 控制周期相关宏（Timer_Init 已设置 1ms 定时中断）
+	- CTRL_TICK_MS: 定时器中断周期，单位 ms
+	- INNER_PERIOD_MS: 内环执行周期，单位 ms（速度环，频率高）
+	- OUTER_PERIOD_MS: 外环执行周期，单位 ms（位置环，频率低）
+	可根据实际需要调整 INNER/OUTER 周期；通常内环比外环快数倍。 */
+#define CTRL_TICK_MS       1
+#define INNER_PERIOD_MS   40
+#define OUTER_PERIOD_MS  200
 uint8_t KeyNum;
 
 int16_t Speed, Location;		//速度，位置
@@ -120,62 +128,52 @@ int main(void)
 
 void TIM1_UP_IRQHandler(void)
 {
-	/*定义静态变量（默认初值为0，函数退出后保留值和存储空间）*/
-	static uint16_t Count1, Count2;		//分别用于内环和外环的计次分频
-	
+	/* 定义静态计数器（基于定时中断 tick，函数退出后保留值） */
+	static uint16_t Count1, Count2;        // 分别用于内环和外环的计次分频
+
 	if (TIM_GetITStatus(TIM1, TIM_IT_Update) == SET)
 	{
-		/*每隔1ms，程序执行到这里一次*/
-		
-		Key_Tick();			//调用按键的Tick函数
-		
-		/*内环计次分频*/
-		Count1 ++;				//计次自增
-		if (Count1 >= 40)		//如果计次40次，则if成立，即if每隔40ms进一次
+		/* 每隔 CTRL_TICK_MS（约 1ms） 到达 */
+
+		Key_Tick();            // 按键周期处理（非阻塞）
+
+		/* ========== 内环（速度环） ========== */
+		/* 内环通常比外环频率高，负责把速度误差快速消除 */
+		Count1++;
+		if (Count1 >= (INNER_PERIOD_MS / CTRL_TICK_MS))
 		{
-			Count1 = 0;			//计次清零，便于下次计次
-			
-			/*获取实际速度值和实际位置值*/
-			/*Encoder_Get函数，可以获取两次读取编码器的计次值增量*/
-			/*此值正比于速度，所以可以表示速度，但它的单位并不是速度的标准单位*/
-			/*此处每隔40ms获取一次计次值增量，电机旋转一周的计次值增量约为408*/
-			/*因此如果想转换为标准单位，比如转/秒*/
-			/*则可将此句代码改成Speed = Encoder_Get() / 408.0 / 0.04;*/
-			Speed = Encoder_Get();		//获取编码器增量，得到实际速度
-			Location += Speed;			//实际速度累加，得到实际位置
-			
-			/*以下进行内环PID控制*/
-			
-			/*内环获取实际值*/
-			Inner.Actual = Speed;		//内环为速度环，实际值为速度值
-			
-			/*PID计算及结构体变量值更新*/
-			PID_Update(&Inner);			//调用封装好的函数，一步完成PID计算和更新
-			
-			/*内环执行控制*/
-			/*内环输出值给到电机PWM*/
+			Count1 = 0;
+
+			/* 读取编码器增量并累加位置
+			   - Encoder_Get() 返回自上次读取后的脉冲增量（与速度成正比）
+			   - 若需转换到物理速度：Speed = Encoder_Get() / PULSES_PER_REV / dt
+				 例如：/408.0 / 0.04（本例 40ms 周期） */
+			Speed = Encoder_Get();
+			Location += Speed;    // 位置为速度的积分（脉冲计数）
+
+			/* 内环 PID 计算（速度环） */
+			Inner.Actual = Speed;
+			PID_Update(&Inner);
+
+			/* 将内环输出直接用于驱动（例如 PWM） */
 			Motor_SetPWM(Inner.Out);
 		}
-		
-		/*外环计次分频*/
-		Count2 ++;				//计次自增
-		if (Count2 >= 40)		//如果计次40次，则if成立，即if每隔40ms进一次
+
+		/* ========== 外环（位置环） ========== */
+		/* 外环频率较低，输出为速度参考，作为内环的 setpoint（级联） */
+		Count2++;
+		if (Count2 >= (OUTER_PERIOD_MS / CTRL_TICK_MS))
 		{
-			Count2 = 0;			//计次清零，便于下次计次
-			
-			/*以下进行外环PID控制*/
-			
-			/*外环获取实际值*/
-			Outer.Actual = Location;		//外环为位置环，实际值为位置值
-			
-			/*PID计算及结构体变量值更新*/
-			PID_Update(&Outer);			//调用封装好的函数，一步完成PID计算和更新
-			
-			/*外环执行控制*/
-			/*外环的输出值作用于内环的目标值，组成串级PID结构*/
+			Count2 = 0;
+
+			/* 位置环使用累加得到的 Location 作为被控量 */
+			Outer.Actual = Location;
+			PID_Update(&Outer);
+
+			/* 把外环输出作为内环目标，构成串级控制 */
 			Inner.Target = Outer.Out;
 		}
-		
+
 		TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
 	}
 }
