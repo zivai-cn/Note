@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(command -v gcc)",
+      "Bash(gcc -fsyntax-only -std=c99 -Wall PID.c)",
+      "Bash(gcc -fsyntax-only -std=c99 -DAW_METHOD=0 -Wall PID.c)",
+      "Bash(gcc -fsyntax-only -std=c99 -DAW_METHOD=1 -Wall PID.c)",
+      "Bash(gcc -fsyntax-only -std=c99 -DAW_METHOD=3 -Wall PID.c)"
+    ]
+  }
+}
