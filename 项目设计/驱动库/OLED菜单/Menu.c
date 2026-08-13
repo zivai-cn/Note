@@ -1,170 +1,158 @@
+/**
+ * @file    Menu.c
+ * @brief   OLED 菜单库 — 实现
+ * @note    驱动方式为“死循环 + 全屏重绘”，结构简单、占用小；
+ *          按键事件独立成函数，方便移植到编码器或独立按键等不同方案。
+ */
 #include "Menu.h"
-/*菜单全局属性*/
-struct MenuProperty Menu_Global = {
-	.Font_Width = 8,    // 字体宽度 8 或 6
-	.Font_Height = 16,    // 字体高度
-	
-	.Line_Height = 16,    // 行高
 
-	.Window_W = 128, // 窗口宽度
-	.Window_H = 64,    // 窗口高度
-
-  	.Menu_FontSize = OLED_8X16, // 菜单默认字体大小
+/*--------------------------------------------------------------------
+ * 菜单全局属性默认值
+ * 与 OLED 实际尺寸、字号保持一致即可
+ *------------------------------------------------------------------*/
+MenuProperty Menu_Global = {
+    .Font_Width     = 8,        /* 字体宽度：8 或 6 */
+    .Font_Height    = 16,       /* 字体高度 */
+    .Line_Height    = 16,       /* 行高 */
+    .Window_W       = 128,      /* 显示区域宽度 */
+    .Window_H       = 64,       /* 显示区域高度 */
+    .Menu_FontSize  = OLED_8X16 /* 菜单字号 */
 };
 
-//////////////////////////////////////////////////////////////////
-/**
- * 函    数：菜单显示光标
- * 参    数：Target_Cur_X 光标目标X位置
- * 参    数：Target_Cur_Y 光标目标Y位置
- * 参    数：Target_Cur_W 光标目标宽度
- * 参    数：Target_Cur_H 光标目标高度
- * 返 回 值：无
- * 说    明：输入光标目标位置和尺寸, 光标会在多次打印中逐渐接近目标位置和尺寸;
- */
-void Menu_ShowCursor(uint8_t Target_Cursor_X, uint8_t Target_Cursor_Y, uint8_t Target_Cursor_W, uint8_t Target_Cursor_H)
+/*--------------------------------------------------------------------
+ * 按键事件层
+ *
+ * 把“按键编号”翻译成菜单的四种操作，与菜单核心逻辑解耦。
+ * 修改按键映射：改 MENU_KEY_* 宏即可，或直接改写下面的函数。
+ *------------------------------------------------------------------*/
+static uint8_t Menu_KeyNum = 0;   /* 保存最近一次读取到的按键值 */
+
+void Menu_GetKey(void)
 {
-	OLED_ReverseArea(Target_Cursor_X, Target_Cursor_Y, Target_Cursor_W, Target_Cursor_H); // 反相光标
+    Menu_KeyNum = Key_GetNum();
 }
 
-//////////////////////////////////////////////////////////////////
-
-/*菜单用到的按键函数独立出来,方便移植和修改,比如没有编码器可以用上下两个按键代替;*/
-static uint8_t Menu_KeyNum = 0; // 保存当前按键值
-
-void Menu_GetKey(void) // 获取按键值并保存
+/* 滚动增量：+1 向下，-1 向上，0 无操作 */
+int8_t Menu_RollEvent(void)
 {
-	Menu_KeyNum = Key_GetNum();
-}
-int8_t Menu_RollEvent(void) // 菜单滚动
-{
-	if (Menu_KeyNum == 1) // 按键1用于向上
-	{
-		return 1;
-	}
-	if (Menu_KeyNum == 2) // 按键2用于向下
-	{
-		return -1;
-	}
-	return 0;
-}
-int8_t Menu_EnterEvent(void) // 菜单确认
-{
-	return Menu_KeyNum == 3; // 确认键接到按键3;
-}
-int8_t Menu_BackEvent(void) // 菜单返回
-{
-	return Menu_KeyNum == 4; // 返回键接到按键4;
+    if (Menu_KeyNum == MENU_KEY_UP)
+    {
+        return -1;              /* 向上：选中下标减 1 */
+    }
+    if (Menu_KeyNum == MENU_KEY_DOWN)
+    {
+        return 1;               /* 向下：选中下标加 1 */
+    }
+    return 0;
 }
 
-/////////////////////////////////////////////////////////
-/**
- * 函    数：菜单运行
- * 参    数：选项列表
- * 返 回 值：
- * 说    明：把选项列表显示出来,并根据按键事件执行相应操作
- */
-void Menu_RunMenu(struct Option_Class *Option_List, uint8_t Catch_MAX )
+/* 确认键：按下返回 1 */
+int8_t Menu_EnterEvent(void)
 {
-  uint8_t Roll_Event = 0;        // 记录菜单滚动事件
-  int8_t Catch_i = 0;            // 选中下标默认为0
-  int8_t Cursor_i = 0;            // 光标下标默认为0
+    return (Menu_KeyNum == MENU_KEY_ENTER);
+}
 
-  uint8_t Cursor_MAX=Menu_Global.Window_H / Menu_Global.Line_Height; // 选项下标最大值(根据窗口高度和行高计算得出)
+/* 返回键：按下返回 1 */
+int8_t Menu_BackEvent(void)
+{
+    return (Menu_KeyNum == MENU_KEY_BACK);
+}
 
-	while (1)
-	{
-		Menu_GetKey(); // 获取按键值
-		if (Menu_EnterEvent())//如果按下确认键
-		{
-			/*如果功能不为空则执行功能,否则返回*/
-			if (Option_List[Cursor_i].func)
-			{
-				Option_List[Cursor_i].func();
-			}
-			else
-			{
-				return;
-			}
-		}
-		if (Menu_BackEvent())//如果按下返回键
-		{
-			return;
-		}
+/*--------------------------------------------------------------------
+ * 光标显示
+ *------------------------------------------------------------------*/
+static void Menu_ShowCursor(uint8_t Cur_X, uint8_t Cur_Y, uint8_t Cur_W, uint8_t Cur_H)
+{
+    /* 反相高亮指定区域，形成光标框 */
+    OLED_ReverseArea(Cur_X, Cur_Y, Cur_W, Cur_H);
+}
 
-		//根据按键事件更改选中下标和光标下标
-		Roll_Event = Menu_RollEvent();
-		if (Roll_Event)
-		{
-			/*更新下标*/
-			Cursor_i += Roll_Event;
-			Catch_i += Roll_Event;
-			/*限制选中下标*/
-			if (Catch_i > Catch_MAX)
-			{
-				Catch_i = Catch_MAX;
-			}
-			else if (Catch_i < 0)
-			{
-				Catch_i = 0;
-			}
-			/*限制光标下标*/
-			if (Cursor_i >= Cursor_MAX)
-			{
-				Cursor_i = Cursor_MAX - 1;
-			}
-			else if (Cursor_i > Catch_MAX)
-			{
-				Cursor_i = Catch_MAX;
-			}
-			else if (Cursor_i < 0) 
-			{
-				Cursor_i = 0;
-			}
-		}
+/*--------------------------------------------------------------------
+ * 菜单运行核心
+ *------------------------------------------------------------------*/
+void Menu_RunMenu(Option_Class *list, uint16_t itemCount)
+{
+    int16_t select_i = 0;              /* 当前选中项下标：0 ~ itemCount-1 */
+    int8_t  roll     = 0;              /* 本次滚动增量 */
+    uint8_t perPage  = Menu_Global.Window_H / Menu_Global.Line_Height; /* 一屏显示的行数 */
 
-		/**********************************************************/
+    if (itemCount == 0)                /* 空菜单直接退出 */
+    {
+        return;
+    }
+    if (perPage == 0)                  /* 防御：一屏至少要能显示 1 行 */
+    {
+        perPage = 1;
+    }
 
-		OLED_Clear();
+    while (1)
+    {
+        Menu_GetKey();                 /* 读取一次按键 */
 
-		// 显示起始下标（根据光标位置动态调整）
-		uint8_t Show_i = 0;
-		
-		// 计算显示起始位置
-		if (Catch_i >= Cursor_MAX)
-		{
-			// 如果选中项超过显示范围，从后往前显示
-			Show_i = Catch_i - Cursor_MAX + 1;
-		}
-		else
-		{
-			// 否则从头开始显示
-			Show_i = 0;
-		}
+        /* 确认：执行选中项的功能；func 为 NULL 视为“返回 / 退出” */
+        if (Menu_EnterEvent())
+        {
+            if (list[select_i].func)
+            {
+                list[select_i].func(); /* 子菜单 / 功能为阻塞式调用，返回后继续本菜单 */
+            }
+            else
+            {
+                return;
+            }
+        }
 
-		for (uint8_t i = 0; i < Cursor_MAX; i++) // 遍历显示选项
-		{
-			if (Show_i + i < 0)
-			{
-				continue;
-			}
-			if (Show_i + i > Catch_MAX)
-			{
-				break;
-			}
+        /* 返回：退出本菜单 */
+        if (Menu_BackEvent())
+        {
+            return;
+        }
 
-			//格式化显示字符串
-			OLED_Printf(
-				0,Menu_Global.Line_Height * (i ),Menu_Global.Menu_FontSize,
-				/*要显示的字符串*/
-				Option_List[Show_i + i].String);
-		}
+        /* 滚动：更新选中下标并做边界钳位 */
+        roll = Menu_RollEvent();
+        if (roll)
+        {
+            select_i += roll;
+            if (select_i < 0)
+            {
+                select_i = 0;
+            }
+            else if (select_i >= itemCount)
+            {
+                select_i = itemCount - 1;
+            }
+        }
 
-		//显示光标
-		uint8_t cursor_y_pos = (Catch_i - Show_i) * Menu_Global.Line_Height;
-		uint8_t cursor_width = (uint8_t)strlen(Option_List[Catch_i].String) * Menu_Global.Font_Width;
-		Menu_ShowCursor(0, cursor_y_pos, cursor_width, Menu_Global.Line_Height);
-		
-    OLED_Update();
-	}
+        /***************** 绘制一帧菜单 *****************/
+
+        OLED_Clear();
+
+        /* 计算本帧从哪个选项开始显示（滚动时保证选中项可见） */
+        uint16_t show_i = 0;
+        if (select_i >= perPage)
+        {
+            show_i = (uint16_t)(select_i - perPage + 1);
+        }
+
+        /* 逐行绘制选项文本 */
+        for (uint8_t i = 0; i < perPage; i++)
+        {
+            uint16_t idx = show_i + i;
+            if (idx >= itemCount)
+            {
+                break;                 /* 后面没有更多选项了 */
+            }
+            OLED_Printf(0,
+                        Menu_Global.Line_Height * i,
+                        Menu_Global.Menu_FontSize,
+                        list[idx].String);
+        }
+
+        /* 绘制光标：宽 = 文本长度 × 字体宽度，高 = 行高 */
+        uint8_t cur_y = (uint8_t)((int16_t)(select_i - show_i) * Menu_Global.Line_Height);
+        uint8_t cur_w = (uint8_t)strlen(list[select_i].String) * Menu_Global.Font_Width;
+        Menu_ShowCursor(0, cur_y, cur_w, Menu_Global.Line_Height);
+
+        OLED_Update();
+    }
 }
