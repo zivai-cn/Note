@@ -20,7 +20,7 @@
   * - PID_USE_INT_LIMIT        积分限幅：限幅 ErrorInt，使 Ki*ErrorInt 不超出输出范围（限幅值由 OutMax/OutMin 自动推导）
   * - PID_USE_INT_SEPARATION   积分分离：|误差|>SepBand 时停止积分（冻结积分项，不清零）
   * - PID_USE_VAR_INTEGRAL     变速积分：按误差大小线性缩放有效积分系数（误差过大时冻结积分项）
-  * - PID_USE_DERIVATIVE_FIRST 微分先行：对实际值微分，目标值突变无冲击
+  * - PID_USE_DERIVATIVE_FIRST 微分先行：对实际值微分，目标值突变无冲击；首拍自动同步实际值，无冷启动尖峰
   * - PID_USE_INCOMPLETE_DERIV 不完全微分：对微分项做一阶低通滤波
   * - PID_USE_OUTPUT_OFFSET    输出偏移：在输出上叠加固定偏移
   * - PID_USE_DEADBAND         输入死区：|误差|<=Deadband 时误差视为 0
@@ -71,6 +71,7 @@ void PID_Init(PID_t *p)
 	p->Error1	    = 0;
 	p->ErrorInt	    = 0;
 	p->DerivFilt	= 0;
+	p->First	= 1;			/* 首拍标志置位，微分先行冷启动时同步实际值 */
 }
 
 /**
@@ -86,6 +87,7 @@ void PID_Reset(PID_t *p)
 	p->ErrorInt	= 0;
 	p->Actual1	= 0;
 	p->DerivFilt	= 0;
+	p->First	= 1;			/* 复位后重新置位首拍标志 */
 }
 
 /**
@@ -258,6 +260,11 @@ void PID_Update(PID_t *p)
 	/*5.微分项计算（微分先行 / 不完全微分）*/
 #if (PID_USE_DERIVATIVE_FIRST)
 	/*微分先行：对实际值微分，目标值突变时不会产生微分冲击*/
+	if (p->First)							/* 首拍：Actual1 尚未跟踪实际值，同步后再求微分，避免冷启动尖峰 */
+	{
+		p->Actual1 = p->Actual;
+		p->First = 0;
+	}
 	PID_F deriv = p->Actual - p->Actual1;	//实际值差分
 #else
 	PID_F deriv = p->Error0 - p->Error1;	//误差差分

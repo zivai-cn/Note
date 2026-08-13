@@ -1,6 +1,8 @@
 #ifndef PID_H
 #define PID_H
 
+#include <stdint.h>				/* 提供 uint8_t（自包含，不依赖外部头文件） */
+
 /* 数据类型宏：默认单精度浮点，可按需整体改为 int32_t / double 等 */
 #ifndef PID_F
 #define PID_F float
@@ -29,6 +31,7 @@ typedef struct {
 	/* 内部状态（由库管理） */
 	PID_F Actual1;			/* 上次实际值（微分先行用） */
 	PID_F DerivFilt;		/* 不完全微分滤波状态 */
+	uint8_t First;			/* 首拍标志：微分先行冷启动时用当前实际值初始化 */
 
 	/* 功能参数（对应 PID_USE_* 功能开关，参数为 0 时功能无效） */
 	PID_F SepBand;			/* 积分分离阈值：|误差|>此值时停止积分 */
