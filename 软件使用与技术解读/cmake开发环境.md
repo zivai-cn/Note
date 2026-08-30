@@ -544,7 +544,6 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--no-warn-rwx-segments,--print-mem
 # 六、在vscode中快速开发stm32的使用方案
 流程如下
 [爽！手把手教你用VSCode开发STM32【大人，时代变啦！！！】_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1QfbpzGENy/?spm_id_from=333.337.search-card.all.click&vd_source=f463c94bb693bc70ae0b1979f04aa8aa)
-
 需要注意的是，vscode的st官方库中只有stlink的驱动文件，因此如果你使用的是非stlink进行烧录调试，需要添加一些额外的配置。
 1. 添加Cortex Debug插件
 arm内核的烧录调试工具。
