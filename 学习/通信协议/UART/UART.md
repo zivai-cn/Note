@@ -19,3 +19,7 @@ UART，全称：Universal Asynchronous Receiver Transmitte，通用异步收发�
 常见的使用地点是调试输出，上下位机的通信。
 # USART
 通用同步异步收发传输器。
+加入了同步功能，在物理接线上引入了一根时钟线。
+基本从不会用同步功能。
+# 在STM32上使用UART
+## 初始化配置
