@@ -22,4 +22,55 @@ UART，全称：Universal Asynchronous Receiver Transmitte，通用异步收发�
 加入了同步功能，在物理接线上引入了一根时钟线。
 基本从不会用同步功能。
 # 在STM32上使用UART
-## 初始化配置
+UART一般用作传输固定格式的数据，因此，在stm32上有三种使用方式：1.轮询模式 2.中断模式 3.DMA模式
+### (一)初始化
+```c
+// 1. 声明句柄
+UART_HandleTypeDef huart1;
+// 2. 配置参数（最常用的 115200-8-N-1）
+huart1.Instance          = USART1;
+huart1.Init.BaudRate     = 115200;
+huart1.Init.WordLength   = UART_WORDLENGTH_8B;
+huart1.Init.StopBits     = UART_STOPBITS_1;
+huart1.Init.Parity       = UART_PARITY_NONE;
+huart1.Init.Mode         = UART_MODE_TX_RX;
+huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+// 3. 初始化
+HAL_UART_Init(&huart1);
+```
+### （二）发送
+```c
+// ① 阻塞发送 —— 最简单，会卡住 CPU 直到发完
+uint8_t data[] = "Hello\r\n";
+HAL_UART_Transmit(&huart1, data, sizeof(data)-1, 1000);  // 超时 1000ms
+// ② 中断发送 —— 不阻塞，发完触发回调
+HAL_UART_Transmit_IT(&huart1, data, sizeof(data)-1);
+// 发完后自动调用 HAL_UART_TxCpltCallback() 
+// ③ DMA 发送 —— 完全不占 CPU，适合大数据量
+HAL_UART_Transmit_DMA(&huart1, data, sizeof(data)-1);
+// 发完后自动调用 HAL_UART_TxCpltCallback()
+```
+### （三）接收
+```c
+uint8_t rx_buf[1];
+// ① 阻塞接收 —— 卡住等数据
+HAL_UART_Receive(&huart1, rx_buf, 1, 1000);
+// ② 中断接收 —— 最常用！每收到 1 字节触发回调
+HAL_UART_Receive_IT(&huart1, rx_buf, 1);
+// 收到后自动调用 HAL_UART_RxCpltCallback()
+// ③ DMA 空闲中断 —— 接收不定长数据的利器
+HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buf, BUF_SIZE);
+// 收到数据或检测到空闲帧后触发 HAL_UARTEx_RxEventCallback()
+```
+### （四）重定向
+```c
+// 重定向 fputc，让 printf 通过串口输出
+int fputc(int ch, FILE *f)
+{
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 10);
+    return ch;
+}
+// 然后就可以愉快地使用了
+printf("ADC Value: %d\r\n", adc_value);
+printf("System Tick: %lu\r\n", HAL_GetTick());
+```
