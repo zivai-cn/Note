@@ -74,3 +74,20 @@ int fputc(int ch, FILE *f)
 printf("ADC Value: %d\r\n", adc_value);
 printf("System Tick: %lu\r\n", HAL_GetTick());
 ```
+### （五）中断回调函数的使用
+```c
+// 接收中断回调
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART1) {
+        // 处理刚收到的 1 字节
+        uint8_t byte = rx_buffer[0];
+        
+        // 简单回显
+        HAL_UART_Transmit(&huart1, &byte, 1, 10);
+        
+        // 再次开启接收中断（重要！否则只收一次）
+        HAL_UART_Receive_IT(&huart1, rx_buffer, 1);
+    }
+}
+```
