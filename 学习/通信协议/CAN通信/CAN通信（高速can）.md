@@ -97,3 +97,4 @@ REC：接收错误计数器。
 
 ![507](assets/CAN通信（高速can）/file-20260902102135515.png)
 ![](assets/CAN通信（高速can）/file-20260902102443833.png)
+# 七、STM32的CAN
