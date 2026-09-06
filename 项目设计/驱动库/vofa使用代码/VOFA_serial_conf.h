@@ -1,6 +1,8 @@
 #ifndef __VOFA_SERIAL_CONF_H
 #define __VOFA_SERIAL_CONF_H
 
+#include "stm32f10x.h"
+
 /* 可根据目标项目修改以下配置 */
 #define VOFA_USART           USART1
 #define VOFA_BAUDRATE        9600U

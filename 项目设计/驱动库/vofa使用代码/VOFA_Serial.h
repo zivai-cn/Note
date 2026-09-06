@@ -1,9 +1,8 @@
 #ifndef __VOFA_SERIAL_H
 #define __VOFA_SERIAL_H
 
-#include "stm32f10x.h"
-#include <stdint.h>
 #include "VOFA_serial_conf.h"
+#include <stdint.h>
 
 void VOFA_Init(void);
 void VOFA_SendString(const char *text);
