@@ -3,11 +3,7 @@
 
 #include "stm32f10x.h"
 #include <stdint.h>
-
-/* 可根据目标项目修改以下配置 */
-#define VOFA_USART           USART1
-#define VOFA_BAUDRATE        9600U
-#define VOFA_RX_BUFFER_SIZE  100U
+#include "VOFA_serial_conf.h"
 
 void VOFA_Init(void);
 void VOFA_SendString(const char *text);
