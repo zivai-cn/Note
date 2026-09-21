@@ -1,7 +1,0 @@
-{
-	"nodes":[
-		{"id":"264c53d2bee293b5","x":-180,"y":300,"width":250,"height":60,"type":"text","text":""},
-		{"id":"c41fb05b8b2b5df0","x":-380,"y":-80,"width":200,"height":50,"type":"text","text":"按键状态变化"}
-	],
-	"edges":[]
-}
