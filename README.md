@@ -11,6 +11,20 @@
 # 知白的学习仓库
 这个仓库将用来记录我在嵌入式领域的学习，包括一些编程语言，单片机，硬件设计相关的内容。同时也包括一些自己在日常中使用的一些网站，软件的使用分享。
 ## 仓库内容
+仓库结构：
+```c
+Note  
+    \__个人
+		\__错误排查日记	
+	\__软件使用与技术解读
+	\__项目设计
+		\__驱动库
+    \__学习
+	    \__软件
+	    \__硬件
+	    \__小知识
+	\__网站分享
+```
 -  [软件使用](https://github.com/kourimi-cn/Note/tree/main/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8)
 - [项目设计](https://github.com/kourimi-cn/Note/tree/main/%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1)
 -  [学习-PCB与硬件](https://github.com/kourimi-cn/Note/tree/main/%E5%AD%A6%E4%B9%A0/PCB%E4%B8%8E%E7%A1%AC%E4%BB%B6)
