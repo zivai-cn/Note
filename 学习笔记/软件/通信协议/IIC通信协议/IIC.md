@@ -12,3 +12,4 @@ IIC，全称为Inter‑Integrated Circuit，内部集成电路总线。同步、
 - 发送应答：
 - 接收应答：
 - 终止位：
+# 帧格式
