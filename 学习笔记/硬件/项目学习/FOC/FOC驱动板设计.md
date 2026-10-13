@@ -5,6 +5,8 @@
 ## （一）鲲FOC无刷电机控制器
 开源地址：[鲲FOC无刷电机控制器（已适配灯哥开源FOC程序） - 立创开源硬件平台](https://oshwhub.com/expert/xin-shuang-lu-simplefoc-wu-shua-dian-ji-qu-dong-qi-yi-shi-pei-deng-ge-foc-cheng-xu)
 尺寸为80mm x 45mm，主控采用ESP32Wroom，资源：两路无刷电机驱动，两路iic，一路can，一路usart接口电路带载能力：供电12V，输出最大电流2A。
+整体分析：整体上是符合预期的，但是使用ESP32芯片，个人认为芯片的解算能力不足，同时在我自己的设想中，并不需要什么联网的操作，如果真的联网，那也一定是更上层的主控板的内容，ESP32芯片并不符合我的设计预期。
+
 
 
 ![](assets/FOC驱动板设计/file-20261013085423355.png)
