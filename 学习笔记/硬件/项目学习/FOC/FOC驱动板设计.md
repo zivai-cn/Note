@@ -25,6 +25,6 @@ CAN协议转换芯片采用的是TJA105x系芯片，是NXP公司的成熟产品�
 串口转换电路。这直接与TYPEC的DP、DM相连，将使TYPEC具备直接发送信息给芯片的能力。大部分的PCB设计都是直接引出芯片的tx、rx，需要使用者转接TTL电平串口转换工具。虽然方便调试，但是对于我的项目，需要控制体积，没有这个必要。
 #### （5）
 ![](assets/FOC驱动板设计/file-20261013145942420.png)
-电机驱动电路。
+电机驱动电路。采用DRV8313PWPR作为电机驱动芯片。INA199A1DCKR作为电流采样芯片。
 ## （二）不知名网友的设计
 获知地址：[网友设计的无刷电机驱动板，主控是STM32，让我帮他看下，历时三天出了这期分析视频_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Xo4y1w7zH?spm_id_from=333.788.videopod.sections&vd_source=f463c94bb693bc70ae0b1979f04aa8aa)
