@@ -12,6 +12,8 @@
 #### （1）
 ![488](assets/FOC驱动板设计/file-20261013101049892.png)
 采用了TYPEC进行5v供电，同时使用了拨码开关进行了隔离。
-
+#### （2）
+![](assets/FOC驱动板设计/file-20261013140730938.png)
+功率电源的输入口，使用MOS管进行了过压保护。
 ## （二）不知名网友的设计
 获知地址：[网友设计的无刷电机驱动板，主控是STM32，让我帮他看下，历时三天出了这期分析视频_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Xo4y1w7zH?spm_id_from=333.788.videopod.sections&vd_source=f463c94bb693bc70ae0b1979f04aa8aa)
