@@ -28,3 +28,9 @@ CAN协议转换芯片采用的是TJA105x系芯片，是NXP公司的成熟产品�
 电机驱动电路。采用DRV8313PWPR作为电机驱动芯片。INA199A1DCKR作为电流采样芯片。
 ## （二）不知名网友的设计
 获知地址：[网友设计的无刷电机驱动板，主控是STM32，让我帮他看下，历时三天出了这期分析视频_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Xo4y1w7zH?spm_id_from=333.788.videopod.sections&vd_source=f463c94bb693bc70ae0b1979f04aa8aa)
+### 整体分析
+这是一个单路无刷电机驱动，尺寸过大，且资源不足，
+### 具体分析
+#### （1）
+![](assets/FOC驱动板设计/file-20261013150817510.png)
+SWD下载电路。在DIO和CLK上添加了22欧电阻。
