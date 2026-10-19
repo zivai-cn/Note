@@ -16,7 +16,7 @@
 # 第 3 章　系统总体设计
 # 第 4 章　硬件接口与底层驱动设计
 ## 4.1 MCU
-芯片为STM32F407VET6，主频168MHZ，本项目工程采用STM32CUBEMX生成的基于HAL库，以FREERTOS为系统的源码。
+芯片为STM32F103C8T6，主频168MHZ，本项目工程采用STM32CUBEMX生成的基于HAL库，以FREERTOS为系统的源码。
 ## 4.2 IMU
 芯片为MPU6050，通信协议采用I2C，设备ID：0x68 。
 - 采样率：1KHZ
