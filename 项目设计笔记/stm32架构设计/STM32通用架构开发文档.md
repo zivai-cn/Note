@@ -13,7 +13,9 @@
 - `typedef void (*usart_module_callback)();`
 串口收到数据之后，会调用usart_module_callback类型的回调函数。在Modules中，将函数名称交给BSP，BSP在中断中调用该函数。即有数据收到，BSP自动执行设定的回调函数下的内容。
 - `USART_TRANSFER_BLOCKING / IT / DMA`
-发送模式枚举，
+发送模式枚举，阻塞、中断、DMA。
+- 实例结构体 `USARTInstance`
+
 # 三、架构设计
 ## 3.1 USART的BSP封装
 在原版的设计中，USART的BSP函数设计存在在短时间内连续调用此接口，若采用 IT/DMA 会导致上一次的发送未完成而新的发送取消的问题。因此在本项目中设计了环形队列，当
