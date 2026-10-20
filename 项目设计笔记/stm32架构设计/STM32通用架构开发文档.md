@@ -15,7 +15,18 @@
 - `USART_TRANSFER_BLOCKING / IT / DMA`
 发送模式枚举，阻塞、中断、DMA。
 - 实例结构体 `USARTInstance`
-
+收数据的缓冲区，包长、串口硬件（`huart`）、回调函数（`callback`）等定义。
+- 配置结构体 `USART_Init_Config_s`
+注册时传进去的三个参数：缓冲区大小、用哪个串口、回调函数。
+- `USARTRegister(cfg)`
+创建串口实例，并自动开启接收。
+- `USARTServiceInit(ins)`
+重新开始接收，用于掉线重启。
+- `USARTSend(ins, buf, len, mode)`
+发送一帧数据。
+- `USARTIsReady(ins)`
+空闲检查。
+不足：
 # 三、架构设计
 ## 3.1 USART的BSP封装
 在原版的设计中，USART的BSP函数设计存在在短时间内连续调用此接口，若采用 IT/DMA 会导致上一次的发送未完成而新的发送取消的问题。因此在本项目中设计了环形队列，当
